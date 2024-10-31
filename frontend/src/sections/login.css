@@ -1,0 +1,42 @@
+
+
+.body {
+  min-height: 90vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: white;
+  margin: 20px;
+}
+
+.welcome-msg{
+  font-size:50px;
+  margin-bottom: 70px;
+  text-align: center;
+}
+
+.login-text{
+  font-size: 35px;
+}
+
+.user-pasword{
+  display: flex;
+  flex-direction: column;
+}
+
+
+.text-area{
+  resize: none;
+  border-radius: 10px;
+  height: 30px;
+  width: 400px;
+  font-size: large;
+  padding: 10px;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+
+
