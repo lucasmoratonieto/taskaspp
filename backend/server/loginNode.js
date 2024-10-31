@@ -11,13 +11,19 @@ import cors from 'cors'
 // })
 
 const app = express()
+app.use(express.json())
 const port = process.env.PORT ?? 3000
 
 app.use(express.static('public'))
 app.use(cors())
 
 app.get("/getData", (req, res) =>{
-  res.send("Hello")
+  res.status(200).json({hola:"lucas"})
+})
+
+app.post("/getData", (req, res) => {
+  console.log(req.body)
+  res.json({ message: "Hello", receivedData: req.body }); // Envía una respuesta JSON
 })
 
 app.listen(port, ()=>{
