@@ -22,7 +22,7 @@ function App() {
     console.log(userCredentials)
 
     async function getHolaNode() {
-      const res = await fetch('http://localhost:3000/getData',
+      const res = await fetch('http://localhost:3500/getData',
         {
           method:'POST',
           headers:{
