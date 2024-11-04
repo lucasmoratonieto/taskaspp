@@ -26,10 +26,43 @@ await db.execute(`
     )`)
 
 app.get("/getData", (req, res) =>{
-  // res.status(200).json({hola:"lucas"})
+  res.status(200).json({hola:"lucas"})
 })
 
-app.post("/getData", async (req, res) => {
+app.post("/submit", async (req, res) => {
+  const user = req.body.user;
+  const userName = req.body.user.userName;
+  const userPassword = req.body.user.userPassword;
+  
+
+  if (user.userName == '' || user.userPassword == ''){
+  res.status(400).json({message:"Please enter a User Value"})
+  } else{
+    const checkUserExist = await db.execute({
+      sql:`SELECT * FROM userData
+          WHERE userName = :userName;`,
+      args:{userName}
+    })
+
+    if (checkUserExist.rows != ''){
+      const checkPassword = await db.execute({
+        sql:`SELECT * FROM userData
+            WHERE userPassword = :userPassword;`,
+        args:{userPassword}
+      })
+      if(checkPassword.rows != ''){
+        res.status(200).json({message:"Succesufl Log in"})
+      } else {
+        res.status(400).json({message:"Incorrect password"})
+      }
+    }  else {
+      res.status(400).json({message:"User Not registered"})
+
+    }
+  }
+})
+
+app.post("/createUser", async (req, res) => {
   const user = req.body.user;
   const userName = req.body.user.userName;
   const userPassword = req.body.user.userPassword;
@@ -42,10 +75,7 @@ app.post("/getData", async (req, res) => {
       sql:`SELECT * FROM userData
           WHERE userName = :userName;`,
       args:{userName}
-    }
-    )
-
-    console.log(checkUserExist.rows)
+    })
 
     if (checkUserExist.rows == ''){
     res.status(200).json({message:"Succesfull user Created"})
@@ -57,7 +87,7 @@ app.post("/getData", async (req, res) => {
         args:{userName, userPassword}
       })
     } else{
-      res.status(200).json({message:"Succesufl Log in"})
+      res.status(400).json({message:"User already created"})
     }
 
   }
