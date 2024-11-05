@@ -26,7 +26,7 @@ await db.execute(`
     )`)
 
 app.get("/getData", (req, res) =>{
-  res.status(200).json({hola:"lucas"})
+  res.status(200).json({url:"./"})
 })
 
 app.post("/submit", async (req, res) => {

@@ -49,6 +49,9 @@
 }
 .button{
   position: relative;
+  display: flex;
+  justify-content: center; /* Centers horizontally */
+  align-items: center; /* Centers vertically */
   left: 0px;
   top: 0px;
   width: 120px;
@@ -58,11 +61,8 @@
   margin-top: 20px;
   background-color:rgb(253, 195, 251);
   transition: 600ms;
-  
-  
-  
-}
 
+}
 
 .button:hover{
   /* position: relative; */
@@ -72,6 +72,18 @@
   top: -5px;
   
 }
+a{
+  text-decoration: none;
+}
+a:link,
+a:visited,
+a:active,
+a:focus {
+color: #2d2d2d;
+}
 
+.submit-link{
+  top: 500px;
+}
 
 

@@ -2,7 +2,9 @@ import { useReducer, useRef } from 'react';
 import './login.css';
 
 function Login() {
-
+  let serverAnwserToEnter = ''
+  let userDataPosted = ''
+  let getURL = ''
   const userNameRef = useRef(null)
   const passwordRef = useRef(null)
      
@@ -21,7 +23,7 @@ function Login() {
   
     console.log(userCredentials)
 
-    async function getHolaNode() {
+    async function checkUser() {
       const res = await fetch('http://localhost:3500/submit',
         {
           method:'POST',
@@ -33,8 +35,8 @@ function Login() {
           })
         }
       )
-      const data = await res.json()
-      console.log(data)
+      serverAnwserToEnter = await res.json()
+      console.log(serverAnwserToEnter)
       console.log('This is the ress: ', res.status)
       if(res.status == 200){
         const res = await fetch('http://localhost:3500/getData',
@@ -42,11 +44,11 @@ function Login() {
             method:'GET'
           }
         )
-        const dataGet = await res.json()
-        console.log(dataGet)
+        getURL = await res.json()
+        console.log(getURL.url)
       }
     }
-    getHolaNode()
+    checkUser()
   }
 
   function createUser(e){
@@ -64,7 +66,7 @@ function Login() {
   
     console.log(userCredentials)
 
-    async function getHolaNode() {
+    async function postNewUser() {
       const res = await fetch('http://localhost:3500/createUser',
         {
           method:'POST',
@@ -76,12 +78,13 @@ function Login() {
           })
         }
       )
-      const data = await res.json()
-      console.log(data)
+      userDataPosted = await res.json()
+      console.log(userDataPosted)
       
     }
-    getHolaNode()
+    postNewUser()
   }
+  
   
   function handleEnter(event) {
     if(event.keyCode === 13 || event.wich === 13){
@@ -108,14 +111,16 @@ function Login() {
           <input className='text-area password' placeholder='Password' autoComplete='off' required ref={passwordRef} onKeyUp={handleEnter} type='password'></input>
         </div>
         <div className='button-area'>
-        <button className='button button-submit' onClick={submitInfo}>
-            <span>
-              <a href="./">Submit</a>
-              </span>
-          </button>
-          <button className='button button-create' onClick={createUser}>
-            <span>Create User</span>
-          </button>
+          <div className='button button-submit'>
+            <a href="#" className='submit-link' onClick={submitInfo}>
+              Submit
+            </a>
+          </div>
+          <div>
+            <a href="#" className='button button-create' onClick={createUser}>
+              Create User
+            </a>
+          </div>
         </div>
       </div>
     </div>
