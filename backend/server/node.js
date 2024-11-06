@@ -1,9 +1,10 @@
 import express from 'express'
 import cors from 'cors'
 import { createClient } from "@libsql/client";
-
 import dotenv from 'dotenv';
 dotenv.config()
+
+let userLogIn = false
 
 
 const db = createClient({
@@ -24,10 +25,19 @@ await db.execute(`
     userName TEXT,
     userPassword TEXT
     )`)
+    
+await db.execute(`
+  CREATE TABLE IF NOT EXISTS userData(
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  userName TEXT,
+  userPassword TEXT
+  )`)
 
 app.get("/getData", (req, res) =>{
   res.status(200).json({url:"./"})
 })
+
+
 
 app.post("/submit", async (req, res) => {
   const user = req.body.user;
@@ -37,6 +47,7 @@ app.post("/submit", async (req, res) => {
 
   if (user.userName == '' || user.userPassword == ''){
   res.status(400).json({message:"Please enter a User Value"})
+  userLogIn = false
   } else{
     const checkUserExist = await db.execute({
       sql:`SELECT * FROM userData
@@ -52,11 +63,14 @@ app.post("/submit", async (req, res) => {
       })
       if(checkPassword.rows != ''){
         res.status(200).json({message:"Succesufl Log in"})
+        userLogIn = true
       } else {
         res.status(400).json({message:"Incorrect password"})
+        userLogIn = false
       }
     }  else {
       res.status(400).json({message:"User Not registered"})
+      userLogIn = false
 
     }
   }
@@ -92,6 +106,17 @@ app.post("/createUser", async (req, res) => {
 
   }
 
+})
+
+
+
+app.get("/getTasks", async (req, res) =>{
+  if (userLogIn){
+
+    const allTasks = await db.execute(`SELECT * FROM task`)
+    res.json(allTasks.rows)
+    console.log(allTasks)
+  }
 })
 
 app.listen(port, ()=>{

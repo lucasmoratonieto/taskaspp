@@ -5,6 +5,7 @@ function Login() {
   let serverAnwserToEnter = ''
   let userDataPosted = ''
   let getURL = ''
+  
   const userNameRef = useRef(null)
   const passwordRef = useRef(null)
      
@@ -38,6 +39,7 @@ function Login() {
       serverAnwserToEnter = await res.json()
       console.log(serverAnwserToEnter)
       console.log('This is the ress: ', res.status)
+      
       if(res.status == 200){
         const res = await fetch('http://localhost:3500/getData',
           {
@@ -112,12 +114,12 @@ function Login() {
         </div>
         <div className='button-area'>
           <div className='button button-submit'>
-            <a href="#" className='submit-link' onClick={submitInfo}>
+            <a href="/" className='submit-link' onClick={submitInfo}>
               Submit
             </a>
           </div>
           <div>
-            <a href="#" className='button button-create' onClick={createUser}>
+            <a href="/" className='button button-create' onClick={createUser}>
               Create User
             </a>
           </div>
