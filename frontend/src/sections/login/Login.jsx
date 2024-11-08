@@ -14,10 +14,8 @@ function Login() {
   const navigate = useNavigate();
 
   function submitInfo(e) {
-    // e.preventDefault()
     const userName = userNameRef.current.value
     const password = passwordRef.current.value
-
 
     const userCredentials = {
       "userName": "",
@@ -46,7 +44,6 @@ function Login() {
       console.log('This is the ress: ', res.status)
 
       if (res.status == 200) {
-        // setHandleSubmit(true)
         navigate('/')
       }
     }

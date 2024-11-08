@@ -21,17 +21,12 @@ const port = process.env.PORT ?? 3500
 
 await db.execute(`
     CREATE TABLE IF NOT EXISTS userData(
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    id TEXT PRIMARY KEY ,
     userName TEXT,
     userPassword TEXT
     )`)
     
-await db.execute(`
-  CREATE TABLE IF NOT EXISTS userData(
-  id INTEGER PRIMARY KEY AUTOINCREMENT,
-  userName TEXT,
-  userPassword TEXT
-  )`)
+
 
 app.get("/getData", (req, res) =>{
   res.status(200).json({url:"./"})
@@ -82,6 +77,8 @@ app.post("/createUser", async (req, res) => {
   const user = req.body.user;
   userName = req.body.user.userName;
   const userPassword = req.body.user.userPassword;
+  const id = crypto.randomUUID()
+  console.log(id)
   // console.log(user)
 
   if (user.userName == '' || user.userPassword == ''){
@@ -95,12 +92,13 @@ app.post("/createUser", async (req, res) => {
 
     if (checkUserExist.rows == ''){
     res.status(200).json({message:"Succesfull user Created"})
+    userLogIn = true
 
       await db.execute({
         sql:`INSERT INTO userData 
-          (userName, userPassword)
-          VALUES (:userName, :userPassword)`,
-        args:{userName, userPassword}
+          (id, userName, userPassword)
+          VALUES (:id ,:userName, :userPassword)`,
+        args:{id, userName, userPassword}
       })
     } else{
       res.status(400).json({message:"User already created"})
