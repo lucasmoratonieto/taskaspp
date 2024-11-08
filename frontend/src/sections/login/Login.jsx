@@ -1,37 +1,42 @@
-import { useReducer, useRef } from 'react';
+import { useEffect, useReducer, useRef, useState } from 'react';
 import './login.css';
+import { useNavigate } from 'react-router-dom';
 
 function Login() {
   let serverAnwserToEnter = ''
   let userDataPosted = ''
   let getURL = ''
-  
+
   const userNameRef = useRef(null)
   const passwordRef = useRef(null)
-     
-  function submitInfo(e){
+  // const [handleSubmit, setHandleSubmit] = useState(null)
+
+  const navigate = useNavigate();
+
+  function submitInfo(e) {
     // e.preventDefault()
     const userName = userNameRef.current.value
     const password = passwordRef.current.value
 
+
     const userCredentials = {
-      "userName":"",
-      "userPassword":""
+      "userName": "",
+      "userPassword": ""
     }
 
     userCredentials.userName = userName
     userCredentials.userPassword = password
-  
+
     console.log(userCredentials)
 
     async function checkUser() {
       const res = await fetch('http://localhost:3500/submit',
         {
-          method:'POST',
-          headers:{
-             "Content-Type": 'application/json'
+          method: 'POST',
+          headers: {
+            "Content-Type": 'application/json'
           },
-          body:JSON.stringify({
+          body: JSON.stringify({
             user: userCredentials
           })
         }
@@ -39,57 +44,52 @@ function Login() {
       serverAnwserToEnter = await res.json()
       console.log(serverAnwserToEnter)
       console.log('This is the ress: ', res.status)
-      
-      if(res.status == 200){
-        const res = await fetch('http://localhost:3500/getData',
-          {
-            method:'GET'
-          }
-        )
-        getURL = await res.json()
-        console.log(getURL.url)
+
+      if (res.status == 200) {
+        // setHandleSubmit(true)
+        navigate('/')
       }
     }
     checkUser()
   }
 
-  function createUser(e){
+  function createUser(e) {
     // e.preventDefault()
     const userName = userNameRef.current.value
     const password = passwordRef.current.value
 
     const userCredentials = {
-      "userName":"",
-      "userPassword":""
+      "userName": "",
+      "userPassword": ""
     }
 
     userCredentials.userName = userName
     userCredentials.userPassword = password
-  
+
     console.log(userCredentials)
 
     async function postNewUser() {
       const res = await fetch('http://localhost:3500/createUser',
         {
-          method:'POST',
-          headers:{
-             "Content-Type": 'application/json'
+          method: 'POST',
+          headers: {
+            "Content-Type": 'application/json'
           },
-          body:JSON.stringify({
+          body: JSON.stringify({
             user: userCredentials
           })
         }
       )
       userDataPosted = await res.json()
       console.log(userDataPosted)
-      
+
     }
     postNewUser()
   }
-  
-  
+
+
   function handleEnter(event) {
-    if(event.keyCode === 13 || event.wich === 13){
+    if (event.keyCode === 13 || event.wich === 13) {
       submitInfo()
     }
   }
@@ -114,7 +114,7 @@ function Login() {
         </div>
         <div className='button-area'>
           <div className='button button-submit'>
-            <a href="/" className='submit-link' onClick={submitInfo}>
+            <a href='#' className='submit-link' onClick={submitInfo}>
               Submit
             </a>
           </div>

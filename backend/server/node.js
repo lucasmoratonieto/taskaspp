@@ -38,10 +38,12 @@ app.get("/getData", (req, res) =>{
 })
 
 
+// -----------------------------------------login.JSX------------------------------------------------
 
+let userName = ''
 app.post("/submit", async (req, res) => {
   const user = req.body.user;
-  const userName = req.body.user.userName;
+  userName = req.body.user.userName;
   const userPassword = req.body.user.userPassword;
   
 
@@ -78,7 +80,7 @@ app.post("/submit", async (req, res) => {
 
 app.post("/createUser", async (req, res) => {
   const user = req.body.user;
-  const userName = req.body.user.userName;
+  userName = req.body.user.userName;
   const userPassword = req.body.user.userPassword;
   // console.log(user)
 
@@ -110,12 +112,27 @@ app.post("/createUser", async (req, res) => {
 
 
 
+// -----------------------------------------Main.JSX------------------------------------------------
+
+app.get("/userName", async (req, res) =>{
+  if (userLogIn){
+
+    const getUserName = await db.execute({
+      sql: `SELECT userName FROM userData WHERE userName = :userName`,
+      args: {userName}
+    })
+    res.json(getUserName.rows)
+    console.log(getUserName)
+  }
+})
+
+
 app.get("/getTasks", async (req, res) =>{
   if (userLogIn){
 
     const allTasks = await db.execute(`SELECT * FROM task`)
     res.json(allTasks.rows)
-    console.log(allTasks)
+    // console.log(allTasks)
   }
 })
 

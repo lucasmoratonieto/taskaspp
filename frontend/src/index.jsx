@@ -2,8 +2,8 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 import './index.css';
-import Login from './sections/Login';
-import Main from './sections/Main';
+import Login from './sections/login/Login';
+import Main from './sections/main/Main';
 
 
 
