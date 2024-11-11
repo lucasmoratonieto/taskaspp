@@ -121,7 +121,8 @@ app.get("/userName", async (req, res) =>{
     })
     res.status(200).json(getUserName.rows)
     console.log(getUserName)
-  } else{
+  }
+   else{
     res.status(400).json({message:"User not logged"})
 
   }
@@ -137,6 +138,83 @@ app.get("/getTasks", async (req, res) =>{
   }
 })
 
+
+app.post("/changeTaskName", async (req, res) => {
+  const body = req.body
+  const id = req.body.id
+  const updatedTaskName = req.body.taskName
+
+  console.log(id)
+  console.log(updatedTaskName)
+
+  try{
+    const changeTaskName = await db.execute({
+      sql: `UPDATE task SET taskName = :updatedTaskName WHERE id = :id`,
+      args: {updatedTaskName, id}
+    })
+    res.status(200).json({message:'Task Name has been updated'})
+  } catch(e){
+    res.status(400).json({message:'Task Name has not been updated'})
+    console.log(e)
+  }
+  
+})
+
+
+app.post("/changeStatus", async (req, res) => {
+  const id = req.body.id
+  const updatedTaskStatus = req.body.taskStatus
+  console.log(id)
+  console.log(updatedTaskStatus)
+
+  try{
+    const changeTaskStatus = await db.execute({
+      sql: `UPDATE task SET taskStatus = :updatedTaskStatus WHERE id = :id`,
+      args: {updatedTaskStatus, id}
+    })
+    res.status(200).json({message:'Status has been updated'})
+  } catch(e){
+    res.status(400).json({message:'Status has not been updated'})
+    console.log(e)
+  }
+  
+})
+
+
+
+
+app.post("/changeRelevance", async (req, res) => {
+  const body = req.body
+  const id = req.body.id
+  const updatedTaskRelevance = req.body.taskRelevance
+
+  try{
+    const changeTaskRelevance = await db.execute({
+      sql: `UPDATE task SET taskRelevance = :updatedTaskRelevance WHERE id = :id`,
+      args: {updatedTaskRelevance, id}
+    })
+    res.status(200).json({message:'Relevance has been updated'})
+  } catch(e){
+    res.status(400).json({message:'Relevance has not been updated'})
+    console.log(e)
+  }
+  
+})
+
+
+
+
+
+
+// ----------------------------------------PORT------------------------------------------------
+
+
+
 app.listen(port, ()=>{
   console.log(`Listening on port: http://localhost:${port}`)
+
 })
+
+
+
+

@@ -9,13 +9,12 @@ function Main() {
 
   const [allTasks, setAllTasks] = useState([])
   const [userNameState, setUserNameState] = useState('Not Registre, Please log in')
-
-  const [valorSeleccionado, setValorSeleccionado] = useState(null)
   const navigate = useNavigate();
   let userName = ''
 
 
   useEffect(() => {
+
 
     const getUserName = async () => {
       const res = await fetch('http://localhost:3500/userName',
@@ -27,7 +26,7 @@ function Main() {
 
       if (status != 400) {
 
-        console.log(status)
+        // console.log(status)
         const getUserNameGet = await res.json()
         userName = getUserNameGet[0].userName
 
@@ -45,8 +44,8 @@ function Main() {
         }
       )
       const allTasks = await res.json()
-      console.log(allTasks)
-      console.log(allTasks[0].id)
+      // console.log(allTasks)
+      // console.log(allTasks[0].id)
 
       setAllTasks(allTasks);
 
@@ -57,15 +56,93 @@ function Main() {
     getTasks()
   }, [])
 
-  function relevanceSelection() {
-    let selectedRelevance = document.querySelectorAll("select")[0].value;
-    console.log(selectedRelevance)
-    document.getElementById('relevance').value = selectedRelevance
-    console.log('This is 1', document.querySelectorAll("select")[0])
-    setValorSeleccionado(selectedRelevance)
+
+  const updateTasKName = async (changeTaskName) => {
+
+    const id = changeTaskName.id[changeTaskName.id.length - 1]
+    const updatedTasKName = changeTaskName.value
+    console.log(id)
+    console.log(updatedTasKName)
+
+    const res = await fetch('http://localhost:3500/changeTaskName',
+      {
+        method: 'POST',
+        headers: {
+          "Content-Type": 'application/json'
+        },
+        body: JSON.stringify({
+          id: id,
+          taskName: updatedTasKName
+        })
+      }
+    )
+    const postChangeTaskName = await res.json()
+    console.log(postChangeTaskName)
 
   }
-  console.log('This is 2', document.querySelectorAll("select")[0])
+
+
+
+  const updateTasKStatus = async (event) => {
+    const changedStatus = event.target.value;
+    const id = event.target.id[event.target.id.length - 1];
+    console.log(changedStatus)
+    console.log(id)
+
+    const res = await fetch('http://localhost:3500/changeStatus',
+      {
+        method: 'POST',
+        headers: {
+          "Content-Type": 'application/json'
+        },
+        body: JSON.stringify({
+          id: id,
+          taskStatus: changedStatus
+        })
+      }
+    )
+    const postChangeStatus = await res.json()
+    console.log(postChangeStatus)
+
+  }
+
+
+  const updateTasKRelevance = async (event) => {
+    const changedRelevance = event.target.value;
+    const id = event.target.id[event.target.id.length - 1];
+    console.log(changedRelevance)
+    console.log(id)
+
+    const res = await fetch('http://localhost:3500/changeRelevance',
+      {
+        method: 'POST',
+        headers: {
+          "Content-Type": 'application/json'
+        },
+        body: JSON.stringify({
+          id: id,
+          taskRelevance: changedRelevance
+        })
+      }
+    )
+    const postChangeRelevance = await res.json()
+    console.log(postChangeRelevance)
+
+  }
+
+  function handleEnter(event) {
+    const changedRelevance = event.target;
+    // console.log(changedRelevance)
+    if (event.keyCode === 13 || event.wich === 13) {
+      updateTasKName(changedRelevance)
+    }
+  }
+  function handleMouse(event) {
+    const changedRelevance = event.target;
+    // console.log(changedRelevance)
+    updateTasKName(changedRelevance)
+
+  }
 
   return (
     <section>
@@ -80,12 +157,19 @@ function Main() {
               {task.id}
             </div>
             <div className={`each-product-name`}>
-              {task.taskName}
+              <input type="text" defaultValue={task.taskName} onKeyUp={handleEnter} /*onChange={handleMouse} */ className='input-task-name' id={`${task.id}`} />
+            </div>
+            <div className={`each-product-status`}>
+              <select name='status' id={`status ${task.id}`} defaultValue={task.taskStatus} onChange={updateTasKStatus}  >
+                <option value="To do">To do</option>
+                <option value="Doing" >Doing</option>
+                <option value="Done">Done</option>
+              </select>
 
             </div>
             <div className={`each-product-relevance`}>
-              <select name='relevance' id="relevance" value={valorSeleccionado === null ? task.taskRelevance : document.querySelectorAll("select")[0].value} onChange={relevanceSelection}>
-                <option id='1' value="Low">low</option>
+              <select name='relevance' className='relevance' id={`${task.id}`} defaultValue={task.taskRelevance} onChange={updateTasKRelevance} >
+                <option value="Low">low</option>
                 <option value="Medium" >Medium</option>
                 <option value="High">High</option>
               </select>
