@@ -1,14 +1,18 @@
 import { useEffect, useReducer, useRef, useState } from 'react';
 import './main.css'
 
+import { useNavigate } from 'react-router-dom';
+
+
 
 function Main() {
 
   const [allTasks, setAllTasks] = useState([])
-  const [userName, setUserName] = useState('Not Registre, Please log in')
+  const [userNameState, setUserNameState] = useState('Not Registre, Please log in')
 
   const [valorSeleccionado, setValorSeleccionado] = useState(null)
-
+  const navigate = useNavigate();
+  let userName = ''
 
 
   useEffect(() => {
@@ -19,12 +23,19 @@ function Main() {
           method: 'GET'
         }
       )
-      const getUserName = await res.json()
-      const userName = getUserName[0].userName
+      const status = await res.status
 
-      setUserName(userName);
+      if (status != 400) {
+
+        console.log(status)
+        const getUserNameGet = await res.json()
+        userName = getUserNameGet[0].userName
+
+        setUserNameState(userName);
+      } else if (status == 400) {
+        navigate('/login')
+      }
     }
-
 
 
     const getTasks = async () => {
@@ -41,9 +52,10 @@ function Main() {
 
     }
     getUserName()
+
+
     getTasks()
   }, [])
-
 
   function relevanceSelection() {
     let selectedRelevance = document.querySelectorAll("select")[0].value;
@@ -58,7 +70,7 @@ function Main() {
   return (
     <section>
       <h1>
-        Welcome to Task App {userName} 👋
+        Welcome to Task App {userNameState} 👋
       </h1>
       <h2>This are the all the tasks from the dataBase</h2>
       <div className='products'>

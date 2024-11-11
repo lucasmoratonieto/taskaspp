@@ -9,7 +9,6 @@ function Login() {
 
   const userNameRef = useRef(null)
   const passwordRef = useRef(null)
-  // const [handleSubmit, setHandleSubmit] = useState(null)
 
   const navigate = useNavigate();
 

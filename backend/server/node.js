@@ -119,8 +119,11 @@ app.get("/userName", async (req, res) =>{
       sql: `SELECT userName FROM userData WHERE userName = :userName`,
       args: {userName}
     })
-    res.json(getUserName.rows)
+    res.status(200).json(getUserName.rows)
     console.log(getUserName)
+  } else{
+    res.status(400).json({message:"User not logged"})
+
   }
 })
 
