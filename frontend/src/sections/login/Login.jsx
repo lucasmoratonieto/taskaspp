@@ -10,6 +10,8 @@ function Login() {
   const userNameRef = useRef(null)
   const passwordRef = useRef(null)
 
+  const [checkPassword, setcheckPassword] = useState(null)
+
   const navigate = useNavigate();
 
   function submitInfo(e) {
@@ -24,8 +26,6 @@ function Login() {
     userCredentials.userName = userName
     userCredentials.userPassword = password
 
-    console.log(userCredentials)
-
     async function checkUser() {
       const res = await fetch('http://localhost:3500/submit',
         {
@@ -39,11 +39,12 @@ function Login() {
         }
       )
       serverAnwserToEnter = await res.json()
-      console.log(serverAnwserToEnter)
-      console.log('This is the ress: ', res.status)
 
       if (res.status == 200) {
         navigate('/')
+      }
+      if (res.status == 400) {
+        setcheckPassword(true)
       }
     }
     checkUser()
@@ -62,8 +63,6 @@ function Login() {
     userCredentials.userName = userName
     userCredentials.userPassword = password
 
-    console.log(userCredentials)
-
     async function postNewUser() {
       const res = await fetch('http://localhost:3500/createUser',
         {
@@ -77,7 +76,6 @@ function Login() {
         }
       )
       userDataPosted = await res.json()
-      console.log(userDataPosted)
 
     }
     postNewUser()
@@ -120,6 +118,9 @@ function Login() {
             </a>
           </div>
         </div>
+      </div>
+      <div className={`incorrect-password ${checkPassword ? '' : 'hide-incorrect-password'}`}>
+        Incorrect Username or Password
       </div>
     </div>
   );

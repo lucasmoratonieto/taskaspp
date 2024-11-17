@@ -83,3 +83,18 @@ color: #2d2d2d;
 }
 
 
+.incorrect-password{
+  margin: 20px;
+  background-color: #edabab;
+  color: #f26464;
+  padding: 5px;
+  border-radius: 5px;
+  
+
+}
+
+.hide-incorrect-password{
+  visibility: hidden;
+}
+
+

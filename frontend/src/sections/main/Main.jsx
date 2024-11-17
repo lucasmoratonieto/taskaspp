@@ -44,9 +44,6 @@ function Main() {
         }
       )
       const allTasks = await res.json()
-      // console.log(allTasks)
-      // console.log(allTasks[0].id)
-
       setAllTasks(allTasks);
 
     }
@@ -143,13 +140,37 @@ function Main() {
     updateTasKName(changedRelevance)
 
   }
+  function addNewTask() {
+
+    const task = {
+      "taskName": "",
+      "taskStatus": "To do",
+      "taskRelevance": "Low"
+    }
+
+    async function postNewTask() {
+      const res = await fetch('http://localhost:3500/newTask',
+        {
+          method: 'POST',
+          headers: {
+            "Content-Type": 'application/json'
+          },
+          body: JSON.stringify({
+            newTask: task
+
+          })
+        }
+      )
+    }
+    postNewTask()
+  }
 
   return (
     <section>
       <h1>
         Welcome to Task App {userNameState} 👋
       </h1>
-      <h2>This are the all the tasks from the dataBase</h2>
+      <h2>These are the all the tasks from the dataBase</h2>
       <div className='products'>
         {allTasks.map((task) => (
           <div key={task.id} className={`each-product product-${task.id}`} >
@@ -173,10 +194,14 @@ function Main() {
                 <option value="Medium" >Medium</option>
                 <option value="High">High</option>
               </select>
-
             </div>
           </div>
         ))}
+        <div className='añadir-tarea'>
+          <button className='button-añadir-tarea' onClick={addNewTask}>
+            Añadir tarea...
+          </button>
+        </div>
       </div>
     </section>
 

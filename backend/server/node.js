@@ -26,6 +26,13 @@ await db.execute(`
     userPassword TEXT
     )`)
     
+  await db.execute(`
+    CREATE TABLE IF NOT EXISTS task(
+    id TEXT PRIMARY KEY ,
+    taskName TEXT,
+    taskStatus TEXT,
+    taskRelevance TEXT
+    )`)
 
 
 app.get("/getData", (req, res) =>{
@@ -200,6 +207,29 @@ app.post("/changeRelevance", async (req, res) => {
   }
   
 })
+
+
+app.post("/newTask", async (req, res) => {
+  const body = req.body
+  console.log('This is the body', body)
+
+  const newTaskName = req.body.newTask.taskName
+  const newTaskStatus = req.body.newTask.taskStatus
+  const newTaskRelevance = req.body.newTask.taskRelevance
+
+  try{
+    const createNewTask = await db.execute({
+      sql: `INSERT INTO task (taskName, taskStatus, taskRelevance) VALUES (:newTaskName, :newTaskStatus, :newTaskRelevance) `,
+      args: { newTaskName, newTaskStatus, newTaskRelevance }
+    })
+    res.status(200).json({message:'New Task has been created'})
+  } catch(e){
+    res.status(400).json({message:'New Task has not been created'})
+    console.log(e)
+  }
+  
+})
+
 
 
 
