@@ -1,11 +1,11 @@
-import { useEffect, useReducer, useRef, useState } from 'react';
+import { useRef, useState } from 'react';
 import './login.css';
 import { useNavigate } from 'react-router-dom';
 
 function Login() {
   let serverAnwserToEnter = ''
   let userDataPosted = ''
-  let getURL = ''
+  // let getURL = ''
 
   const userNameRef = useRef(null)
   const passwordRef = useRef(null)
@@ -40,10 +40,10 @@ function Login() {
       )
       serverAnwserToEnter = await res.json()
 
-      if (res.status == 200) {
+      if (res.status === 200) {
         navigate('/')
       }
-      if (res.status == 400) {
+      if (res.status === 400) {
         setcheckPassword(true)
       }
     }
