@@ -188,6 +188,27 @@ app.post("/changeStatus", async (req, res) => {
 })
 
 
+app.post("/changeDate", async (req, res) => {
+  const id = req.body.id
+  const updatedTaskDate = req.body.taskDate
+  console.log(id)
+  console.log(updatedTaskDate)
+
+  try{
+    const changeTaskDate = await db.execute({
+      sql: `UPDATE task SET taskStartDate = :updatedTaskDate WHERE id = :id`,
+      args: {updatedTaskDate, id}
+    })
+    res.status(200).json({message:'Date has been updated'})
+  } catch(e){
+    res.status(400).json({message:'Date has not been updated'})
+    console.log(e)
+  }
+  
+})
+
+
+
 
 
 app.post("/changeRelevance", async (req, res) => {

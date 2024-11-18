@@ -1,6 +1,6 @@
-import { useEffect, useReducer, useRef, useState } from 'react';
-import './main.css'
+import { useEffect, useState } from 'react';
 import "react-datepicker/dist/react-datepicker.css";
+import './main.css'
 import DatePicker from "react-datepicker";
 
 import { useNavigate } from 'react-router-dom';
@@ -39,14 +39,14 @@ function Main() {
       )
       const status = await res.status
 
-      if (status != 400) {
+      if (status !== 400) {
 
         // console.log(status)
         const getUserNameGet = await res.json()
         userName = getUserNameGet[0].userName
 
         setUserNameState(userName);
-      } else if (status == 400) {
+      } else if (status === 400) {
         navigate('/login')
       }
     }
@@ -138,27 +138,58 @@ function Main() {
 
 
 
-  const updateTasKDate = async (event) => {
-    const changedRelevance = event;
-    const id = event.target;
-    console.log(changedRelevance)
-    console.log(id)
+  const updateTasKDate = async (date, event) => {
 
-    // const res = await fetch('http://localhost:3500/changeRelevance',
-    //   {
-    //     method: 'POST',
-    //     headers: {
-    //       "Content-Type": 'application/json'
-    //     },
-    //     body: JSON.stringify({
-    //       id: id,
-    //       taskRelevance: changedRelevance
-    //     })
-    //   }
-    // )
-    // const postChangeRelevance = await res.json()
-    // console.log(postChangeRelevance)
-    // getTasks()
+    //Esto funciona, pero el poblema es que datepicker cambia los nomnbres y el event.target no tiene id.
+    setStartDate(date);
+    const week = event.target.parentElement;
+    const month = week.parentElement;
+    const monthContainer = month.parentElement;
+    const calendar = monthContainer.parentElement;
+    const style = calendar.parentElement;
+    const pooper = style.parentElement;
+    const loop = pooper.parentElement;
+    const test = loop.parentElement.className;
+    const id = test[test.length - 1]
+
+
+    const changedDateText = event.target.ariaLabel;
+    const changedDateTextth = changedDateText.substr(7)
+    const removeOrdinal = (changedDateTextth) => changedDateTextth.replace(/(\d+)(st|nd|rd|th)/, "$1");
+    const changedDate = removeOrdinal(changedDateTextth);
+
+    const parsedDate = new Date(changedDate.replace(/^\w+, /, ""));
+    const formattedDate = parsedDate.toLocaleDateString({
+
+      year: 'numeric',
+      month: 'numeric',
+      day: 'numeric'
+    });
+
+
+    console.log(id)
+    console.log(formattedDate)
+
+
+    const dateValue = document.getElementsByClassName(`react-datepicker ${id}`)[0].value
+    console.log('This is the date value', dateValue)
+
+
+    const res = await fetch('http://localhost:3500/changeDate',
+      {
+        method: 'POST',
+        headers: {
+          "Content-Type": 'application/json'
+        },
+        body: JSON.stringify({
+          id: id,
+          taskDate: formattedDate
+        })
+      }
+    )
+    const postChangeDate = await res.json()
+    console.log(postChangeDate)
+    getTasks()
 
   }
 
@@ -177,12 +208,12 @@ function Main() {
       updateTasKName(changedRelevance)
     }
   }
-  function handleMouse(event) {
-    const changedRelevance = event.target;
-    // console.log(changedRelevance)
-    updateTasKName(changedRelevance)
+  // function handleMouse(event) {
+  //   const changedRelevance = event.target;
+  //   // console.log(changedRelevance)
+  //   updateTasKName(changedRelevance)
 
-  }
+  // }
   function addNewTask() {
 
     const task = {
@@ -217,7 +248,7 @@ function Main() {
         Welcome to Task App {userNameState} 👋
       </h1>
       <h2>These are the all the tasks from the dataBase</h2>
-      <div className='products'>
+      <div className='tasks'>
         <div className='table-title'>
 
           <h4>
@@ -238,14 +269,14 @@ function Main() {
         </div>
         {allTasks.map((task, number) => (
 
-          <div key={task.id} className={`each-product product-${task.id}`} >
-            <div className={`each-product-id`}>
+          <div key={task.id} className={`each-task task-${task.id}`} >
+            <div className={`each-task-id`}>
               {number + 1}
             </div>
-            <div className={`each-product-name`}>
+            <div className={`each-task-name`}>
               <input type="text" defaultValue={task.taskName} onKeyUp={handleEnter} /*onChange={handleMouse} */ className='input-task-name' id={`${task.id}`} />
             </div>
-            <div className={`each-product-status`}>
+            <div className={`each-task-status`}>
               <select name='status' id={`status ${task.id}`} defaultValue={task.taskStatus} onChange={updateTasKStatus}  >
                 <option value="To do">To do</option>
                 <option value="Doing" >Doing</option>
@@ -253,15 +284,15 @@ function Main() {
               </select>
 
             </div>
-            <div className={`each-product-relevance`}>
+            <div className={`each-task-relevance`}>
               <select name='relevance' className='relevance' id={`${task.id}`} defaultValue={task.taskRelevance} onChange={updateTasKRelevance} >
                 <option value="Low">low</option>
                 <option value="Medium" >Medium</option>
                 <option value="High">High</option>
               </select>
             </div>
-            <div className='each-product-date'>
-              <DatePicker placeholderText="Selecciona una fecha" className='react-datepicker' onChange={updateTasKDate} dateFormat="dd-MM-yyyy" // Configura el formato deseado
+            <div className={`each-task-date ${task.id}`}>
+              <DatePicker placeholderText="Selecciona una fecha" className={`react-datepicker ${task.id}`} selected={startDate} onChange={updateTasKDate} dateFormat="dd-MM-yyyy" // Configura el formato deseado
               />
             </div>
           </div>

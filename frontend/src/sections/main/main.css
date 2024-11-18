@@ -8,7 +8,7 @@ h1{
   font-size: 50px;
 }
 
-.products{
+.tasks{
   display: grid;
   grid-template-columns: repeat(1 , 1fr);
   grid-auto-rows: minmax(30px, auto);
@@ -37,17 +37,17 @@ h4{
   padding: 5px;
 }
 
-.each-product{
+.each-task{
   display: flex;
   flex-direction: row;
   gap: 20px;
   padding: 5px;
 }
-.each-product-id{
+.each-task-id{
   padding: 5px;
 
 }
-.each-product-name{
+.each-task-name{
   min-width: 150px;
   padding: 5px;
 }
@@ -107,16 +107,49 @@ select:focus {
   cursor: pointer;
 }
 
+.react-datepicker{
+  border-radius: 25px !important; 
+  border: 0px !important;
+  background-color:#282c34 !important;
+  color:white !important;
+  width: 70px;
+  padding: 5px;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  
+}
+
+
+.react-datepicker__header {
+  padding: 0 !important;
+  border-radius: 25px !important;
+
+}
 .react-datepicker-popper {
   border: 0px;
-  background: #ed0c0c;
+  background: #484848;
+  border-radius: 25px ;
+
   padding: 0;
 }
 
-.react-datepicker__current-month{
-  background-color:#484848;
+
+.react-datepicker__month-container{
+  background-color:#484848 !important;
+  border-radius: 25px ;
+}
+.react-datepicker__month{
+  border-radius: 25px !important;
+  background-color:#484848 !important;
 
 }
+.react-datepicker__current-month{
+  background-color:#484848;
+  border-radius: 25px 25px 0 0;
+
+}
+
 .react-datepicker__day-names{
   background-color:#484848;
 }
