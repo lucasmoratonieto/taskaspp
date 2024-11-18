@@ -262,7 +262,7 @@ app.post("/newTask", async (req, res) => {
 
 
 app.listen(port, ()=>{
-  console.log(`Listening on port: http://localhost:${port}`)
+  console.log(`Listening on port: ${port}`)
 
 })
 
