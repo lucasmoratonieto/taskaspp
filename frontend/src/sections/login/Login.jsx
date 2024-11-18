@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom';
 function Login() {
   // let serverAnwserToEnter = ''
   // let userDataPosted = ''
-  // let getURL = ''
+  const baseURL = 'https://amused-respect-production.up.railway.app/'
 
   const userNameRef = useRef(null)
   const passwordRef = useRef(null)
@@ -27,7 +27,7 @@ function Login() {
     userCredentials.userPassword = password
 
     async function checkUser() {
-      const res = await fetch('http://localhost:3500/submit',
+      const res = await fetch(baseURL + '/submit',
         {
           method: 'POST',
           headers: {
@@ -64,7 +64,7 @@ function Login() {
     userCredentials.userPassword = password
 
     async function postNewUser() {
-      await fetch('http://localhost:3500/createUser',
+      await fetch(baseURL + '/createUser',
         {
           method: 'POST',
           headers: {

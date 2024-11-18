@@ -8,6 +8,7 @@ import { useNavigate } from 'react-router-dom';
 
 
 function Main() {
+  const baseURL = 'https://amused-respect-production.up.railway.app/'
 
   const [allTasks, setAllTasks] = useState([])
   const [userNameState, setUserNameState] = useState('Not Registre, Please log in')
@@ -20,7 +21,7 @@ function Main() {
 
 
   const getTasks = async () => {
-    const res = await fetch('http://localhost:3500/getTasks',
+    const res = await fetch(baseURL + '/getTasks',
       {
         method: 'GET'
       }
@@ -32,7 +33,7 @@ function Main() {
 
   useEffect(() => {
     const getUserName = async () => {
-      const res = await fetch('http://localhost:3500/userName',
+      const res = await fetch(baseURL + '/userName',
         {
           method: 'GET'
         }
@@ -61,7 +62,7 @@ function Main() {
     const updatedTasKName = changeTaskName.value
     console.log(id)
     console.log(updatedTasKName)
-    const res = await fetch('http://localhost:3500/changeTaskName',
+    const res = await fetch(baseURL + '/changeTaskName',
       {
         method: 'POST',
         headers: {
@@ -87,7 +88,7 @@ function Main() {
     console.log(changedStatus)
     console.log(id)
 
-    const res = await fetch('http://localhost:3500/changeStatus',
+    const res = await fetch(baseURL + '/changeStatus',
       {
         method: 'POST',
         headers: {
@@ -113,7 +114,7 @@ function Main() {
     console.log(changedRelevance)
     console.log(id)
 
-    const res = await fetch('http://localhost:3500/changeRelevance',
+    const res = await fetch(baseURL + '/changeRelevance',
       {
         method: 'POST',
         headers: {
@@ -172,7 +173,7 @@ function Main() {
     console.log('This is the date value', dateValue)
 
 
-    const res = await fetch('http://localhost:3500/changeDate',
+    const res = await fetch(baseURL + '/changeDate',
       {
         method: 'POST',
         headers: {
@@ -220,7 +221,7 @@ function Main() {
     }
 
     async function postNewTask() {
-      await fetch('http://localhost:3500/newTask',
+      await fetch(baseURL + '/newTask',
         {
           method: 'POST',
           headers: {
