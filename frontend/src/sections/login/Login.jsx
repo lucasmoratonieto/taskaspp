@@ -3,8 +3,8 @@ import './login.css';
 import { useNavigate } from 'react-router-dom';
 
 function Login() {
-  let serverAnwserToEnter = ''
-  let userDataPosted = ''
+  // let serverAnwserToEnter = ''
+  // let userDataPosted = ''
   // let getURL = ''
 
   const userNameRef = useRef(null)
@@ -38,7 +38,7 @@ function Login() {
           })
         }
       )
-      serverAnwserToEnter = await res.json()
+      // let serverAnwserToEnter = await res.json()
 
       if (res.status === 200) {
         navigate('/')
@@ -64,7 +64,7 @@ function Login() {
     userCredentials.userPassword = password
 
     async function postNewUser() {
-      const res = await fetch('http://localhost:3500/createUser',
+      await fetch('http://localhost:3500/createUser',
         {
           method: 'POST',
           headers: {
@@ -75,7 +75,7 @@ function Login() {
           })
         }
       )
-      userDataPosted = await res.json()
+      // let userDataPosted = await res.json()
 
     }
     postNewUser()
@@ -108,9 +108,9 @@ function Login() {
         </div>
         <div className='button-area'>
           <div className='button button-submit'>
-            <a href='#' className='submit-link' onClick={submitInfo}>
+            <button className='submit-link' onClick={submitInfo}>
               Submit
-            </a>
+            </button>
           </div>
           <div>
             <a href="/" className='button button-create' onClick={createUser}>
