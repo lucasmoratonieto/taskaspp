@@ -223,7 +223,7 @@ function Main() {
     }
 
     async function postNewTask() {
-      const res = await fetch('http://localhost:3500/newTask',
+      await fetch('http://localhost:3500/newTask',
         {
           method: 'POST',
           headers: {
