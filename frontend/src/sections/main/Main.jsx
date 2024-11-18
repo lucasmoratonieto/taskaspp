@@ -8,7 +8,7 @@ import { useNavigate } from 'react-router-dom';
 
 
 function Main() {
-  const baseURL = 'https://amused-respect-production.up.railway.app/'
+  const baseURL = 'https://amused-respect-production.up.railway.app'
 
   const [allTasks, setAllTasks] = useState([])
   const [userNameState, setUserNameState] = useState('Not Registre, Please log in')
