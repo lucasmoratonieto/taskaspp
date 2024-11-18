@@ -108,9 +108,9 @@ function Login() {
         </div>
         <div className='button-area'>
           <div className='button button-submit'>
-            <button className='submit-link' onClick={submitInfo}>
+            <a href='/' className='submit-link' onClick={submitInfo}>
               Submit
-            </button>
+            </a>
           </div>
           <div>
             <a href="/" className='button button-create' onClick={createUser}>

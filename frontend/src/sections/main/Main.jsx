@@ -12,7 +12,7 @@ function Main() {
   const [allTasks, setAllTasks] = useState([])
   const [userNameState, setUserNameState] = useState('Not Registre, Please log in')
   const navigate = useNavigate();
-  let userName = ''
+  // let userName = ''
 
   const [startDate, setStartDate] = useState(new Date());
 
@@ -43,19 +43,16 @@ function Main() {
 
         // console.log(status)
         const getUserNameGet = await res.json()
-        userName = getUserNameGet[0].userName
+        const userName = getUserNameGet[0].userName
 
         setUserNameState(userName);
       } else if (status === 400) {
         navigate('/login')
       }
     }
-
-
     getUserName()
-
-
     getTasks()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
 
