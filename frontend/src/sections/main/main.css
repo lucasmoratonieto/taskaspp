@@ -16,6 +16,27 @@ h1{
 
 }
 
+h4{
+  height: 10px;
+  
+}
+.table-title{
+  display: flex;
+  flex-direction: row;
+  gap: 20px;
+   align-items: center;
+}
+
+.table-title-name{
+  min-width: 190px;
+  padding: 5px;
+}
+
+.table-title-status{
+  min-width: 25px;
+  padding: 5px;
+}
+
 .each-product{
   display: flex;
   flex-direction: row;
@@ -85,3 +106,23 @@ select:focus {
   all: unset;
   cursor: pointer;
 }
+
+.react-datepicker-popper {
+  border: 0px;
+  background: #ed0c0c;
+  padding: 0;
+}
+
+.react-datepicker__current-month{
+  background-color:#484848;
+
+}
+.react-datepicker__day-names{
+  background-color:#484848;
+}
+
+.react-datepicker__month-container {
+  background-color: #484848;
+
+}
+

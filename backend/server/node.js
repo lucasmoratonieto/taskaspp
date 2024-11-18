@@ -28,10 +28,10 @@ await db.execute(`
     
   await db.execute(`
     CREATE TABLE IF NOT EXISTS task(
-    id TEXT PRIMARY KEY ,
     taskName TEXT,
     taskStatus TEXT,
-    taskRelevance TEXT
+    taskRelevance TEXT,
+    taskStartDate DATE
     )`)
 
 

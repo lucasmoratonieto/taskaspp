@@ -95,9 +95,9 @@ function Login() {
       <div className='form'>
         <div className='user-pasword login-area'>
           <label className='login-text'>
-            <span>User Name</span>
+            <span>Username</span>
           </label>
-          <input className='text-area login' placeholder='User Name' required ref={userNameRef}></input>
+          <input className='text-area login' placeholder='Username' required ref={userNameRef}></input>
         </div>
         <div className='user-pasword
          password-area'>

@@ -1,5 +1,7 @@
 import { useEffect, useReducer, useRef, useState } from 'react';
 import './main.css'
+import "react-datepicker/dist/react-datepicker.css";
+import DatePicker from "react-datepicker";
 
 import { useNavigate } from 'react-router-dom';
 
@@ -12,10 +14,23 @@ function Main() {
   const navigate = useNavigate();
   let userName = ''
 
+  const [startDate, setStartDate] = useState(new Date());
+
+
+
+
+  const getTasks = async () => {
+    const res = await fetch('http://localhost:3500/getTasks',
+      {
+        method: 'GET'
+      }
+    )
+    const allTasks = await res.json()
+    setAllTasks(allTasks);
+
+  }
 
   useEffect(() => {
-
-
     const getUserName = async () => {
       const res = await fetch('http://localhost:3500/userName',
         {
@@ -37,16 +52,6 @@ function Main() {
     }
 
 
-    const getTasks = async () => {
-      const res = await fetch('http://localhost:3500/getTasks',
-        {
-          method: 'GET'
-        }
-      )
-      const allTasks = await res.json()
-      setAllTasks(allTasks);
-
-    }
     getUserName()
 
 
@@ -55,12 +60,10 @@ function Main() {
 
 
   const updateTasKName = async (changeTaskName) => {
-
-    const id = changeTaskName.id[changeTaskName.id.length - 1]
+    const id = changeTaskName.id
     const updatedTasKName = changeTaskName.value
     console.log(id)
     console.log(updatedTasKName)
-
     const res = await fetch('http://localhost:3500/changeTaskName',
       {
         method: 'POST',
@@ -75,6 +78,7 @@ function Main() {
     )
     const postChangeTaskName = await res.json()
     console.log(postChangeTaskName)
+    getTasks()
 
   }
 
@@ -82,7 +86,7 @@ function Main() {
 
   const updateTasKStatus = async (event) => {
     const changedStatus = event.target.value;
-    const id = event.target.id[event.target.id.length - 1];
+    const id = event.target.id;
     console.log(changedStatus)
     console.log(id)
 
@@ -100,13 +104,15 @@ function Main() {
     )
     const postChangeStatus = await res.json()
     console.log(postChangeStatus)
+    getTasks()
 
   }
 
 
   const updateTasKRelevance = async (event) => {
     const changedRelevance = event.target.value;
-    const id = event.target.id[event.target.id.length - 1];
+    // const id = event.target.id[event.target.id.length - 1];
+    const id = event.target.id;
     console.log(changedRelevance)
     console.log(id)
 
@@ -124,12 +130,49 @@ function Main() {
     )
     const postChangeRelevance = await res.json()
     console.log(postChangeRelevance)
+    getTasks()
 
   }
 
+
+
+
+
+  const updateTasKDate = async (event) => {
+    const changedRelevance = event;
+    const id = event.target;
+    console.log(changedRelevance)
+    console.log(id)
+
+    // const res = await fetch('http://localhost:3500/changeRelevance',
+    //   {
+    //     method: 'POST',
+    //     headers: {
+    //       "Content-Type": 'application/json'
+    //     },
+    //     body: JSON.stringify({
+    //       id: id,
+    //       taskRelevance: changedRelevance
+    //     })
+    //   }
+    // )
+    // const postChangeRelevance = await res.json()
+    // console.log(postChangeRelevance)
+    // getTasks()
+
+  }
+
+
+
+
+
+
+
+
+
   function handleEnter(event) {
     const changedRelevance = event.target;
-    // console.log(changedRelevance)
+
     if (event.keyCode === 13 || event.wich === 13) {
       updateTasKName(changedRelevance)
     }
@@ -163,6 +206,9 @@ function Main() {
       )
     }
     postNewTask()
+    setTimeout(() => {
+      getTasks()
+    }, 200)
   }
 
   return (
@@ -172,10 +218,29 @@ function Main() {
       </h1>
       <h2>These are the all the tasks from the dataBase</h2>
       <div className='products'>
-        {allTasks.map((task) => (
+        <div className='table-title'>
+
+          <h4>
+            Nº
+          </h4>
+          <h4 className='table-title-name'>
+            Task Name
+          </h4>
+          <h4 className='table-title-status'>
+            Status
+          </h4>
+          <h4 className='table-title-relevance'>
+            Relevance
+          </h4>
+          <h4 className='table-title-start-date'>
+            Start Date
+          </h4>
+        </div>
+        {allTasks.map((task, number) => (
+
           <div key={task.id} className={`each-product product-${task.id}`} >
             <div className={`each-product-id`}>
-              {task.id}
+              {number + 1}
             </div>
             <div className={`each-product-name`}>
               <input type="text" defaultValue={task.taskName} onKeyUp={handleEnter} /*onChange={handleMouse} */ className='input-task-name' id={`${task.id}`} />
@@ -194,6 +259,10 @@ function Main() {
                 <option value="Medium" >Medium</option>
                 <option value="High">High</option>
               </select>
+            </div>
+            <div className='each-product-date'>
+              <DatePicker placeholderText="Selecciona una fecha" className='react-datepicker' onChange={updateTasKDate} dateFormat="dd-MM-yyyy" // Configura el formato deseado
+              />
             </div>
           </div>
         ))}
