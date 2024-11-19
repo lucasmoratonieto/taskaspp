@@ -253,6 +253,7 @@ app.post("/newTask", async (req, res) => {
 
 
 app.get("/logOff", async (req, res) =>{
+  res.status(200).json({message:"Log Off"})
   userLogIn = false  
 })
 

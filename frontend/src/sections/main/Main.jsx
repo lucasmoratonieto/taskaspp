@@ -134,10 +134,6 @@ function Main() {
     
   }
 
-
-
-
-
   const updateTasKDate = async (date, event) => {
 
     //Esto funciona, pero el poblema es que datepicker cambia los nomnbres y el event.target no tiene id.
@@ -228,20 +224,24 @@ function Main() {
     }, 200)
   }
 
-  async function logOff() {
-    await fetch(baseURL + '/logOff',
-    {
-      method: 'GET'
+  async function logOffFunction(){
+    async function logOff() {
+      const res = await fetch(baseURL + '/logOff',
+      {
+        method: 'GET'
+      }
+    )
+    const logOffMessage = await res.json()
+    console.log(logOffMessage)
     }
-  )
-  console.log('hola')
-  navigate('/login')
+
+    navigate('/login')
   }
 
   return (
     <section>
       <div>
-        <button onClick={logOff}>
+        <button onClick={logOffFunction}>
           Log off
         </button>
       </div>
