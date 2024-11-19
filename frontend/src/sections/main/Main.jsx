@@ -57,6 +57,20 @@ function Main() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
+  async function logOffFunction(){
+    async function logOff() {
+      const res = await fetch(baseURL + '/logOff',
+      {
+        method: 'GET'
+      }
+    )
+    const logOffMessage = await res.json()
+    console.log(logOffMessage)
+    }
+    logOff()
+    navigate('/login')
+  }
+
 
   const updateTasKName = async (changeTaskName) => {
     const id = changeTaskName.id
@@ -224,20 +238,33 @@ function Main() {
     }, 200)
   }
 
-  async function logOffFunction(){
-    async function logOff() {
-      const res = await fetch(baseURL + '/logOff',
-      {
-        method: 'GET'
-      }
-    )
-    const logOffMessage = await res.json()
-    console.log(logOffMessage)
-    }
+  async function deleteTaskFunction (event){
+    const id = event.target.id;
+    console.log(id)
+    const deleteTask = await fetch(baseURL + '/deleteTask',
+    {
+      method:'POST',
+      headers:{
+        "Content-Type": 'application/json'
+      },
+      body: JSON.stringify({
+        id: id
+      })
+    })
+    const taskDeleted = await deleteTask.json()
+    console.log(taskDeleted)
+    getTasks()
 
-    navigate('/login')
   }
 
+
+
+// ----------------------------------------------------------
+// ----------------------------------------------------------
+// ----------------------------------------------------------
+// ----------------------------------------------------------
+// ----------------------------------------------------------
+// ----------------------------------------------------------
   return (
     <section>
       <div>
@@ -295,6 +322,11 @@ function Main() {
             <td className={`each-task-date ${task.id}`}>
               <DatePicker placeholderText="Selecciona una fecha" className={`react-datepicker ${task.id}`} selected={startDate} onChange={updateTasKDate} dateFormat="dd-MM-yyyy" // Configura el formato deseado
               />
+            </td>
+            <td>
+              <button className={`delete-button ${task.id}`} onClick={deleteTaskFunction}>
+                x
+              </button>
             </td>
           </tr>
         ))}

@@ -119,6 +119,12 @@ app.post("/createUser", async (req, res) => {
 
 // -----------------------------------------Main.JSX------------------------------------------------
 
+
+app.get("/logOff", async (req, res) =>{
+  res.status(200).json({message:"Log Off"})
+  userLogIn = false  
+})
+
 app.get("/userName", async (req, res) =>{
   if (userLogIn){
 
@@ -252,11 +258,27 @@ app.post("/newTask", async (req, res) => {
 })
 
 
-app.get("/logOff", async (req, res) =>{
-  res.status(200).json({message:"Log Off"})
-  userLogIn = false  
-})
 
+app.post("/deleteTask", async (req, res) => {
+  const body = req.body
+  const id = req.body.id
+  
+
+  console.log(id)
+  
+
+  try{
+    const deteleTask = await db.execute({
+      sql: `DELETE FROM task WHERE id = :id`,
+      args: {id}
+    })
+    res.status(200).json({message:'Task has been deleted'})
+  } catch(e){
+    res.status(400).json({message:'Task not been deleted'})
+    console.log(e)
+  }
+  
+})
 
 
 
