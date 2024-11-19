@@ -1,48 +1,50 @@
-/* index.css or global stylesheet */
-html, body {
-  height: 100%; /* Ensure the body takes the full height of the browser window */
-  margin: 0;    /* Remove default margins */
+html {
+  height: 100%;
+  width: 100%;  /* Asegura que el html ocupe el 100% del ancho */
+  margin: 0;
   display: flex; 
-  align-items: center; /* Center content vertically */
-  justify-content: center; /* Center content horizontally */
+  justify-content: center;
 }
 
 #root {
-  width: 100%; /* Optional: Adjust width if needed */
-  max-width: 500px; /* Optional: Limit max width */
-  text-align: center; /* Optional: Center text or other content */
-}
-
-#root{
-  color: white ;
+  color: white;
   margin: auto;
   display: flex;
+  flex-direction: column;  /* Asegura que el contenido se alinee correctamente */
   min-height: 90vh;
-  height: 100%; 
-  display: flex; 
+  
   align-items: center; 
   justify-content: center; 
 }
 
-
 body {
-  
   background-color: #282c34;
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-  'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-  sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   justify-content: center;
   align-items: center;
   text-align: center;
+  height: 100%;  
+  display: flex;
+  min-width: 10px;
+}
+@media screen and (min-width: 550px) { 
+  body {
+    margin: 20px;
+    max-width: 100%;
+    min-width: 500px;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+  }
 }
 
-@media screen and (max-width: 550px){ 
-  body{
+@media screen and (max-width: 550px) { 
+  body {
     margin: 20px;
-    max-width: 400px;
+    max-width: 100%;
     min-width: 300px;
     justify-content: center;
     align-items: center;
@@ -50,9 +52,17 @@ body {
   }
 }
 
-
+@media screen and (max-width: 400px) { 
+  body {
+    margin: 20px;
+    max-width: 100%;
+    min-width: 250px;  /* Ajusta el tamaño para pantallas más pequeñas */
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+  }
+}
 
 code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
 }
