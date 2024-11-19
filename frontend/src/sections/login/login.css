@@ -1,23 +1,20 @@
 
 .body {
-  
   display: flex;
   flex-direction: column;
   align-items: center;  
   justify-content: center;
   text-align: center;
-  
+  margin: 25px;
 }
 
-@media screen and (max-width: 550px){ 
+/* @media screen and (max-width: 550px){ 
   body{
     margin: 20px;
       max-width: 400px;
       min-width: 300px;   
   }
-
-  
-}
+} */
 
 .welcome-msg{
   font-size:50px;
@@ -49,6 +46,19 @@
   padding: 10px;
   margin-top: 10px;
   margin-bottom: 10px;
+}
+
+@media screen and (max-width: 550px){ 
+  .text-area{
+    resize: none;
+    border-radius: 10px;
+    height: 30px;
+    width: 300px;
+    font-size: large;
+    padding: 10px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+  }
 }
 
 .button-area{

@@ -246,61 +246,61 @@ function Main() {
         Welcome to Task App {userNameState} 👋
       </h1>
       <h2>These are the all the tasks from the dataBase</h2>
-      <div className='tasks'>
-        <div className='table-title'>
+      <table className='tasks'>
+        <tr className='table-title'>
 
           <h4>
             Nº
           </h4>
-          <h4 className='table-title-name'>
+          <th className='table-title-name'>
             Task Name
-          </h4>
-          <h4 className='table-title-status'>
+          </th>
+          <th className='table-title-status'>
             Status
-          </h4>
-          <h4 className='table-title-relevance'>
+          </th>
+          <th className='table-title-relevance'>
             Relevance
-          </h4>
-          <h4 className='table-title-start-date'>
+          </th>
+          <th className='table-title-start-date'>
             Start Date
-          </h4>
-        </div>
+          </th>
+        </tr>
         {allTasks.map((task, number) => (
 
-          <div key={task.id} className={`each-task task-${task.id}`} >
-            <div className={`each-task-id`}>
+          <tr key={task.id} className={`each-task task-${task.id}`} >
+            <td className={`each-task-id`}>
               {number + 1}
-            </div>
-            <div className={`each-task-name`}>
+            </td>
+            <td className={`each-task-name`}>
               <input type="text" defaultValue={task.taskName} onKeyUp={handleEnter} /*onChange={handleMouse} */ className='input-task-name' id={`${task.id}`} />
-            </div>
-            <div className={`each-task-status`}>
+            </td>
+            <td className={`each-task-status`}>
               <select name='status' id={`status ${task.id}`} defaultValue={task.taskStatus} onChange={updateTasKStatus}  >
                 <option value="To do">To do</option>
                 <option value="Doing" >Doing</option>
                 <option value="Done">Done</option>
               </select>
 
-            </div>
-            <div className={`each-task-relevance`}>
+            </td>
+            <td className={`each-task-relevance`}>
               <select name='relevance' className='relevance' id={`${task.id}`} defaultValue={task.taskRelevance} onChange={updateTasKRelevance} >
                 <option value="Low">low</option>
                 <option value="Medium" >Medium</option>
                 <option value="High">High</option>
               </select>
-            </div>
-            <div className={`each-task-date ${task.id}`}>
+            </td>
+            <td className={`each-task-date ${task.id}`}>
               <DatePicker placeholderText="Selecciona una fecha" className={`react-datepicker ${task.id}`} selected={startDate} onChange={updateTasKDate} dateFormat="dd-MM-yyyy" // Configura el formato deseado
               />
-            </div>
-          </div>
+            </td>
+          </tr>
         ))}
         <div className='añadir-tarea'>
           <button className='button-añadir-tarea' onClick={addNewTask}>
             Añadir tarea...
           </button>
         </div>
-      </div>
+      </table>
     </section>
 
   )
