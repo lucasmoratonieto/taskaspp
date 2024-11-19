@@ -252,7 +252,9 @@ app.post("/newTask", async (req, res) => {
 })
 
 
-
+app.get("/logOff", async (req, res) =>{
+  userLogIn = false  
+})
 
 
 

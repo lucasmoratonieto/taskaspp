@@ -129,7 +129,7 @@ function Main() {
     const postChangeRelevance = await res.json()
     console.log(postChangeRelevance)
     getTasks()
-
+    
   }
 
 
@@ -190,15 +190,6 @@ function Main() {
     getTasks()
 
   }
-
-
-
-
-
-
-
-
-
   function handleEnter(event) {
     const changedRelevance = event.target;
 
@@ -206,12 +197,7 @@ function Main() {
       updateTasKName(changedRelevance)
     }
   }
-  // function handleMouse(event) {
-  //   const changedRelevance = event.target;
-  //   // console.log(changedRelevance)
-  //   updateTasKName(changedRelevance)
 
-  // }
   function addNewTask() {
 
     const task = {
@@ -240,8 +226,21 @@ function Main() {
     }, 200)
   }
 
+  async function logOff() {
+    const res = await fetch(baseURL + '/logOff',
+        {
+          method: 'GET'
+        }
+      )
+  }
+
   return (
     <section>
+      <div>
+        <button onClick={logOff}>
+          Log off
+        </button>
+      </div>
       <h1>
         Welcome to Task App {userNameState} 👋
       </h1>
@@ -249,9 +248,9 @@ function Main() {
       <table className='tasks'>
         <tr className='table-title'>
 
-          <h4>
+          <th>
             Nº
-          </h4>
+          </th>
           <th className='table-title-name'>
             Task Name
           </th>
