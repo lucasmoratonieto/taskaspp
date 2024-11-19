@@ -227,7 +227,7 @@ function Main() {
   }
 
   async function logOff() {
-    const res = await fetch(baseURL + '/logOff',
+    await fetch(baseURL + '/logOff',
         {
           method: 'GET'
         }
