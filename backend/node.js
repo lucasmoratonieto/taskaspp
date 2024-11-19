@@ -17,7 +17,8 @@ app.use(express.json())
 app.use(express.static('public'))
 app.use(cors())
 
-const port = process.env.PORT ?? 3500
+// const port = process.env.PORT ?? 3500
+const port = 3500
 
 await db.execute(`
     CREATE TABLE IF NOT EXISTS userData(
@@ -260,7 +261,7 @@ app.post("/newTask", async (req, res) => {
 
 
 app.post("/deleteTask", async (req, res) => {
-  const body = req.body
+  
   const id = req.body.id
   
 

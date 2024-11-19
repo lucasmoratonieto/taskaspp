@@ -4,11 +4,13 @@ import './main.css'
 import DatePicker from "react-datepicker";
 
 import { useNavigate } from 'react-router-dom';
+import { threeDots } from '../../assets/icons/icons.js';
+import { baseURL } from '../../assets/constanst/constants.js'
 
 
 
 function Main() {
-  const baseURL = 'https://amused-respect-production.up.railway.app'
+
 
   const [allTasks, setAllTasks] = useState([])
   const [userNameState, setUserNameState] = useState('Not Registre, Please log in')
@@ -16,10 +18,6 @@ function Main() {
   // let userName = ''
 
   const [startDate, setStartDate] = useState(new Date());
-  
-
-
-
 
   const getTasks = async () => {
     const res = await fetch(baseURL + '/getTasks',
@@ -57,15 +55,15 @@ function Main() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
-  async function logOffFunction(){
+  async function logOffFunction() {
     async function logOff() {
       const res = await fetch(baseURL + '/logOff',
-      {
-        method: 'GET'
-      }
-    )
-    const logOffMessage = await res.json()
-    console.log(logOffMessage)
+        {
+          method: 'GET'
+        }
+      )
+      const logOffMessage = await res.json()
+      console.log(logOffMessage)
     }
     logOff()
     navigate('/login')
@@ -144,8 +142,8 @@ function Main() {
     const postChangeRelevance = await res.json()
     console.log(postChangeRelevance)
     getTasks()
-    
-    
+
+
   }
 
   const updateTasKDate = async (date, event) => {
@@ -238,19 +236,19 @@ function Main() {
     }, 200)
   }
 
-  async function deleteTaskFunction (event){
+  async function deleteTaskFunction(event) {
     const id = event.target.id;
     console.log(id)
     const deleteTask = await fetch(baseURL + '/deleteTask',
-    {
-      method:'POST',
-      headers:{
-        "Content-Type": 'application/json'
-      },
-      body: JSON.stringify({
-        id: id
+      {
+        method: 'POST',
+        headers: {
+          "Content-Type": 'application/json'
+        },
+        body: JSON.stringify({
+          id: id
+        })
       })
-    })
     const taskDeleted = await deleteTask.json()
     console.log(taskDeleted)
     getTasks()
@@ -259,17 +257,19 @@ function Main() {
 
 
 
-// ----------------------------------------------------------
-// ----------------------------------------------------------
-// ----------------------------------------------------------
-// ----------------------------------------------------------
-// ----------------------------------------------------------
-// ----------------------------------------------------------
+  // ----------------------------------------------------------
+  // ----------------------------------------------------------
+  // ----------------------------------------------------------
+  // ----------------------------------------------------------
+  // ----------------------------------------------------------
+  // ----------------------------------------------------------
   return (
     <section>
       <div className='log-off'>
         <button onClick={logOffFunction}>
-          Log off
+          <div className='log-off-div'>
+            Log off
+          </div>
         </button>
       </div>
       <h1>
@@ -324,8 +324,8 @@ function Main() {
               />
             </td>
             <td>
-              <button className={`delete-button ${task.id}`} onClick={deleteTaskFunction}>
-                x
+              <button className={`delete-button ${task.id}`} id={task.id} onClick={deleteTaskFunction}>
+                <img src={threeDots} alt={`button${task.id}`} />
               </button>
             </td>
           </tr>
