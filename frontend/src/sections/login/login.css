@@ -4,6 +4,18 @@
   display: flex;
   flex-direction: column;
   align-items: center;  
+  justify-content: center;
+  text-align: center;
+  
+}
+
+@media screen and (max-width: 550px){ 
+  body{
+    margin: 20px;
+      max-width: 400px;
+      min-width: 300px;   
+  }
+
   
 }
 
