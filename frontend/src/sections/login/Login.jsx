@@ -90,7 +90,7 @@ function Login() {
   return (
     <div className="body">
       <label className='welcome-msg'>
-        <span>Welcome, please sign in </span>
+        <h1>Welcome, please sign in </h1>
       </label>
       <div className='form'>
         <div className='user-pasword login-area'>

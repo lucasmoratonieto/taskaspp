@@ -267,7 +267,7 @@ function Main() {
 // ----------------------------------------------------------
   return (
     <section>
-      <div>
+      <div className='log-off'>
         <button onClick={logOffFunction}>
           Log off
         </button>

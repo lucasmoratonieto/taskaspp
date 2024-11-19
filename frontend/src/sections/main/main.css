@@ -1,3 +1,13 @@
+.log-off{
+  width: 100%;
+  text-align: end;
+  color: #777777;
+}
+.log-off:hover{
+  color: #f1f1f1;
+}
+
+
 @media screen and (min-width: 550px){ 
   h1{
     font-size: 50px;
