@@ -16,6 +16,7 @@ function Main() {
   // let userName = ''
 
   const [startDate, setStartDate] = useState(new Date());
+  
 
 
 
@@ -30,29 +31,29 @@ function Main() {
     setAllTasks(allTasks);
 
   }
+  const getUserName = async () => {
+    const res = await fetch(baseURL + '/userName',
+      {
+        method: 'GET'
+      }
+    )
+    const status = await res.status
+
+    if (status !== 400) {
+
+      // console.log(status)
+      const getUserNameGet = await res.json()
+      const userName = getUserNameGet[0].userName
+
+      setUserNameState(userName);
+      getTasks()
+    } else if (status === 400) {
+      navigate('/login')
+    }
+  }
 
   useEffect(() => {
-    const getUserName = async () => {
-      const res = await fetch(baseURL + '/userName',
-        {
-          method: 'GET'
-        }
-      )
-      const status = await res.status
-
-      if (status !== 400) {
-
-        // console.log(status)
-        const getUserNameGet = await res.json()
-        const userName = getUserNameGet[0].userName
-
-        setUserNameState(userName);
-      } else if (status === 400) {
-        navigate('/login')
-      }
-    }
     getUserName()
-    getTasks()
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
@@ -129,6 +130,7 @@ function Main() {
     const postChangeRelevance = await res.json()
     console.log(postChangeRelevance)
     getTasks()
+    
     
   }
 
@@ -228,10 +230,12 @@ function Main() {
 
   async function logOff() {
     await fetch(baseURL + '/logOff',
-        {
-          method: 'GET'
-        }
-      )
+    {
+      method: 'GET'
+    }
+  )
+  console.log('hola')
+  navigate('/login')
   }
 
   return (
