@@ -271,7 +271,7 @@ function Main() {
   async function deleteTaskFunction(event) {
     const id = event.target.id;
     console.log(id)
-    const deleteTask = await fetch('https://amused-respect-production.up.railway.app/createUser',
+    const deleteTask = await fetch(baseURL + '/deleteTask',
       {
         method: 'POST',
         headers: {
