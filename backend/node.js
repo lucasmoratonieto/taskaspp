@@ -6,6 +6,8 @@ const app = express()
 app.use(cors({
   origin: "*"
 }));
+app.options("*", cors());
+
 dotenv.config()
 
 let userLogIn = false
