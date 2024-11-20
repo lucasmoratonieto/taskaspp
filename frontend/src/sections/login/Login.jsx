@@ -78,7 +78,10 @@ function Login() {
             "Content-Type": 'application/json'
           },
           body: JSON.stringify({
-            user: userCredentials
+            user: {
+              userName: userName,
+              password: password
+            }
           })
         }
       )
