@@ -44,7 +44,7 @@ const InactivityHandler = ({ timeout = 300000 }) => { // Timeout in milliseconds
     };
   }, [timeout, navigate]);
 
-  async function logOffFunction() {
+  
     async function logOff() {
       const res = await fetch(baseURL + '/logOff',
         {
@@ -56,7 +56,7 @@ const InactivityHandler = ({ timeout = 300000 }) => { // Timeout in milliseconds
     }
     logOff()
     navigate('/login')
-  }
+  
 
   return isActive ? (
     ''
