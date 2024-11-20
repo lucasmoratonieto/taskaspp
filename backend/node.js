@@ -17,8 +17,8 @@ app.use(express.json())
 app.use(express.static('public'))
 app.use(cors())
 
-// const port = process.env.PORT ?? 3500
-const port = 3500
+const port = process.env.PORT ?? 3500
+// const port = 3500
 
 await db.execute(`
     CREATE TABLE IF NOT EXISTS userData(
