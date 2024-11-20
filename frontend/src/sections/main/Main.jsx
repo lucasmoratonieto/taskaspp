@@ -115,7 +115,7 @@ function Main() {
     console.log(id)
     console.log(updatedTasKName)
 
-    if (event.keyCode === 13 || event.wich === 13) {
+    if (e.keyCode === 13 || e.wich === 13) {
       updateTasKName(id, updatedTasKName)
     }
   }
