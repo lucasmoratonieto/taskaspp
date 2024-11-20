@@ -123,6 +123,9 @@ app.post("/createUser", async (req, res) => {
             VALUES (:id ,:userName, :userPassword)`,
           args: { id, userName, userPassword }
         })
+        res.status(200).json({ message: "User created" })
+        res.status(200).json({ message: user })
+        res.status(200).json({ message: userPassword })
       } else {
         res.status(400).json({ message: "User already created" })
       }
