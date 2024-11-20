@@ -69,7 +69,7 @@ function Login() {
     userCredentials.userPassword = password
 
     async function postNewUser() {
-      await fetch(baseURL + '/createUser',
+      const res = await fetch(baseURL + '/createUser',
         {
           method: 'POST',
           headers: {
@@ -80,8 +80,9 @@ function Login() {
           })
         }
       )
-      // let userDataPosted = await res.json()
-
+      if (res.status === 200) {
+        navigate('/')
+      }
     }
     postNewUser()
   }
@@ -94,7 +95,7 @@ function Login() {
   }
   return (
     <section>
-      {isLoading ? (<LoadingScreen/>) :
+      {isLoading ? (<LoadingScreen />) :
         <div className="body">
           <label className='welcome-msg'>
             <h1>Welcome, please sign in </h1>
@@ -115,14 +116,14 @@ function Login() {
             </div>
             <div className='button-area'>
               <div className='button button-submit'>
-                <a href='/' className='submit-link' onClick={submitInfo}>
+                <button className='submit-link' onClick={submitInfo}>
                   Submit
-                </a>
+                </button>
               </div>
               <div>
-                <a href="/" className='button button-create' onClick={createUser}>
+                <button className='button button-create' onClick={createUser}>
                   Create User
-                </a>
+                </button>
               </div>
             </div>
           </div>

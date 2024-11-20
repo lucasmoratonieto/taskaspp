@@ -88,30 +88,35 @@ app.post("/createUser", async (req, res) => {
   const id = crypto.randomUUID()
   console.log(id)
   // console.log(user)
+  try{
 
-  if (user.userName == '' || user.userPassword == ''){
-  res.status(400).json({message:"Please enter a User Value"})
-  } else{
-    const checkUserExist = await db.execute({
-      sql:`SELECT * FROM userData
-          WHERE userName = :userName;`,
-      args:{userName}
-    })
-
-    if (checkUserExist.rows == ''){
-    res.status(200).json({message:"Succesfull user Created"})
-    userLogIn = true
-
-      await db.execute({
-        sql:`INSERT INTO userData 
-          (id, userName, userPassword)
-          VALUES (:id ,:userName, :userPassword)`,
-        args:{id, userName, userPassword}
-      })
+    if (user.userName == '' || user.userPassword == ''){
+    res.status(400).json({message:"Please enter a User Value"})
     } else{
-      res.status(400).json({message:"User already created"})
+      const checkUserExist = await db.execute({
+        sql:`SELECT * FROM userData
+            WHERE userName = :userName;`,
+        args:{userName}
+      })
+  
+      if (checkUserExist.rows == ''){
+      res.status(200).json({message:"Succesfull user Created"})
+      userLogIn = true
+  
+        await db.execute({
+          sql:`INSERT INTO userData 
+            (id, userName, userPassword)
+            VALUES (:id ,:userName, :userPassword)`,
+          args:{id, userName, userPassword}
+        })
+      } else{
+        res.status(400).json({message:"User already created"})
+      }
+  
     }
-
+  } catch(err){
+    res.status(400).json({message:err})
+    console.log(err)
   }
 
 })
