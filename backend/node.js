@@ -37,8 +37,8 @@ await db.execute(`
     userName TEXT,
     userPassword TEXT
     )`)
-    
-  await db.execute(`
+
+await db.execute(`
     CREATE TABLE IF NOT EXISTS task(
     taskName TEXT,
     taskStatus TEXT,
@@ -47,8 +47,8 @@ await db.execute(`
     )`)
 
 
-app.get("/getData", (req, res) =>{
-  res.status(200).json({url:"./"})
+app.get("/getData", (req, res) => {
+  res.status(200).json({ url: "./" })
 })
 
 
@@ -59,73 +59,77 @@ app.post("/submit", async (req, res) => {
   const user = req.body.user;
   userName = req.body.user.userName;
   const userPassword = req.body.user.userPassword;
-  
 
-  if (user.userName == '' || user.userPassword == ''){
-  res.status(400).json({message:"Please enter a User Value"})
-  userLogIn = false
-  } else{
+
+  if (user.userName == '' || user.userPassword == '') {
+    res.status(400).json({ message: "Please enter a User Value" })
+    userLogIn = false
+  } else {
     const checkUserExist = await db.execute({
-      sql:`SELECT * FROM userData
+      sql: `SELECT * FROM userData
           WHERE userName = :userName;`,
-      args:{userName}
+      args: { userName }
     })
 
-    if (checkUserExist.rows != ''){
+    if (checkUserExist.rows != '') {
       const checkPassword = await db.execute({
-        sql:`SELECT * FROM userData
+        sql: `SELECT * FROM userData
             WHERE userPassword = :userPassword;`,
-        args:{userPassword}
+        args: { userPassword }
       })
-      if(checkPassword.rows != ''){
-        res.status(200).json({message:"Succesufl Log in"})
+      if (checkPassword.rows != '') {
+        res.status(200).json({ message: "Succesufl Log in" })
         userLogIn = true
       } else {
-        res.status(400).json({message:"Incorrect password"})
+        res.status(400).json({ message: "Incorrect password" })
         userLogIn = false
       }
-    }  else {
-      res.status(400).json({message:"User Not registered"})
+    } else {
+      res.status(400).json({ message: "User Not registered" })
       userLogIn = false
     }
   }
 })
 
 app.post("/createUser", async (req, res) => {
-  res.header('Access-Control-Allow-Origin', '*')
+  res.setHeader("Access-Control-Allow-Origin", "*"); // O usa tu dominio específico
+  res.setHeader("Access-Control-Allow-Methods", "POST, GET, OPTIONS, DELETE");
+  res.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization");
+  res.json({ message: "User created successfully!" });
+
   const user = req.body.user;
   userName = req.body.user.userName;
   const userPassword = req.body.user.userPassword;
   const id = crypto.randomUUID()
   console.log(id)
-  try{
+  try {
 
-    if (user.userName == '' || user.userPassword == ''){
-    res.status(400).json({message:"Please enter a User Value"})
-    } else{
+    if (user.userName == '' || user.userPassword == '') {
+      res.status(400).json({ message: "Please enter a User Value" })
+    } else {
       const checkUserExist = await db.execute({
-        sql:`SELECT * FROM userData
+        sql: `SELECT * FROM userData
             WHERE userName = :userName;`,
-        args:{userName}
+        args: { userName }
       })
-  
-      if (checkUserExist.rows == ''){
-      res.status(200).json({message:"Succesfull user Created"})
-      userLogIn = true
-  
+
+      if (checkUserExist.rows == '') {
+        res.status(200).json({ message: "Succesfull user Created" })
+        userLogIn = true
+
         await db.execute({
-          sql:`INSERT INTO userData 
+          sql: `INSERT INTO userData 
             (id, userName, userPassword)
             VALUES (:id ,:userName, :userPassword)`,
-          args:{id, userName, userPassword}
+          args: { id, userName, userPassword }
         })
-      } else{
-        res.status(400).json({message:"User already created"})
+      } else {
+        res.status(400).json({ message: "User already created" })
       }
-  
+
     }
-  } catch(err){
-    res.status(400).json({message:err})
+  } catch (err) {
+    res.status(400).json({ message: err })
     console.log(err)
   }
 
@@ -136,30 +140,30 @@ app.post("/createUser", async (req, res) => {
 // -----------------------------------------Main.JSX------------------------------------------------
 
 
-app.get("/logOff", async (req, res) =>{
-  res.status(200).json({message:"Log Off"})
-  userLogIn = false  
+app.get("/logOff", async (req, res) => {
+  res.status(200).json({ message: "Log Off" })
+  userLogIn = false
 })
 
-app.get("/userName", async (req, res) =>{
-  if (userLogIn){
+app.get("/userName", async (req, res) => {
+  if (userLogIn) {
 
     const getUserName = await db.execute({
       sql: `SELECT userName FROM userData WHERE userName = :userName`,
-      args: {userName}
+      args: { userName }
     })
     res.status(200).json(getUserName.rows)
     console.log(getUserName)
   }
-   else{
-    res.status(400).json({message:"User not logged"})
+  else {
+    res.status(400).json({ message: "User not logged" })
 
   }
 })
 
 
-app.get("/getTasks", async (req, res) =>{
-  if (userLogIn){
+app.get("/getTasks", async (req, res) => {
+  if (userLogIn) {
     const allTasks = await db.execute(`SELECT * FROM task`)
     res.json(allTasks.rows)
     // console.log(allTasks)
@@ -175,17 +179,17 @@ app.post("/changeTaskName", async (req, res) => {
   console.log(id)
   console.log(updatedTaskName)
 
-  try{
+  try {
     const changeTaskName = await db.execute({
       sql: `UPDATE task SET taskName = :updatedTaskName WHERE id = :id`,
-      args: {updatedTaskName, id}
+      args: { updatedTaskName, id }
     })
-    res.status(200).json({message:'Task Name has been updated'})
-  } catch(e){
-    res.status(400).json({message:'Task Name has not been updated'})
+    res.status(200).json({ message: 'Task Name has been updated' })
+  } catch (e) {
+    res.status(400).json({ message: 'Task Name has not been updated' })
     console.log(e)
   }
-  
+
 })
 
 
@@ -195,17 +199,17 @@ app.post("/changeStatus", async (req, res) => {
   console.log(id)
   console.log(updatedTaskStatus)
 
-  try{
+  try {
     const changeTaskStatus = await db.execute({
       sql: `UPDATE task SET taskStatus = :updatedTaskStatus WHERE id = :id`,
-      args: {updatedTaskStatus, id}
+      args: { updatedTaskStatus, id }
     })
-    res.status(200).json({message:'Status has been updated'})
-  } catch(e){
-    res.status(400).json({message:'Status has not been updated'})
+    res.status(200).json({ message: 'Status has been updated' })
+  } catch (e) {
+    res.status(400).json({ message: 'Status has not been updated' })
     console.log(e)
   }
-  
+
 })
 
 
@@ -215,17 +219,17 @@ app.post("/changeDate", async (req, res) => {
   console.log(id)
   console.log(updatedTaskDate)
 
-  try{
+  try {
     const changeTaskDate = await db.execute({
       sql: `UPDATE task SET taskStartDate = :updatedTaskDate WHERE id = :id`,
-      args: {updatedTaskDate, id}
+      args: { updatedTaskDate, id }
     })
-    res.status(200).json({message:'Date has been updated'})
-  } catch(e){
-    res.status(400).json({message:'Date has not been updated'})
+    res.status(200).json({ message: 'Date has been updated' })
+  } catch (e) {
+    res.status(400).json({ message: 'Date has not been updated' })
     console.log(e)
   }
-  
+
 })
 
 
@@ -237,17 +241,17 @@ app.post("/changeRelevance", async (req, res) => {
   const id = req.body.id
   const updatedTaskRelevance = req.body.taskRelevance
 
-  try{
+  try {
     const changeTaskRelevance = await db.execute({
       sql: `UPDATE task SET taskRelevance = :updatedTaskRelevance WHERE id = :id`,
-      args: {updatedTaskRelevance, id}
+      args: { updatedTaskRelevance, id }
     })
-    res.status(200).json({message:'Relevance has been updated'})
-  } catch(e){
-    res.status(400).json({message:'Relevance has not been updated'})
+    res.status(200).json({ message: 'Relevance has been updated' })
+  } catch (e) {
+    res.status(400).json({ message: 'Relevance has not been updated' })
     console.log(e)
   }
-  
+
 })
 
 
@@ -259,40 +263,40 @@ app.post("/newTask", async (req, res) => {
   const newTaskStatus = req.body.newTask.taskStatus
   const newTaskRelevance = req.body.newTask.taskRelevance
 
-  try{
+  try {
     const createNewTask = await db.execute({
       sql: `INSERT INTO task (taskName, taskStatus, taskRelevance) VALUES (:newTaskName, :newTaskStatus, :newTaskRelevance) `,
       args: { newTaskName, newTaskStatus, newTaskRelevance }
     })
-    res.status(200).json({message:'New Task has been created'})
-  } catch(e){
-    res.status(400).json({message:'New Task has not been created'})
+    res.status(200).json({ message: 'New Task has been created' })
+  } catch (e) {
+    res.status(400).json({ message: 'New Task has not been created' })
     console.log(e)
   }
-  
+
 })
 
 
 
 app.post("/deleteTask", async (req, res) => {
-  
+
   const id = req.body.id
-  
+
 
   console.log(id)
-  
 
-  try{
+
+  try {
     const deteleTask = await db.execute({
       sql: `DELETE FROM task WHERE id = :id`,
-      args: {id}
+      args: { id }
     })
-    res.status(200).json({message:'Task has been deleted'})
-  } catch(e){
-    res.status(400).json({message:'Task not been deleted'})
+    res.status(200).json({ message: 'Task has been deleted' })
+  } catch (e) {
+    res.status(400).json({ message: 'Task not been deleted' })
     console.log(e)
   }
-  
+
 })
 
 
@@ -301,7 +305,7 @@ app.post("/deleteTask", async (req, res) => {
 
 
 
-app.listen(port, ()=>{
+app.listen(port, () => {
   console.log(`Listening on port: ${port}`)
 
 })
