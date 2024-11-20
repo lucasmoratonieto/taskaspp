@@ -90,19 +90,20 @@ function Main() {
   const updateTasKName = async (id, updatedTasKName) => {
     console.log(id)
     console.log(updatedTasKName)
-    try{
+    try {
       await fetch(baseURL + '/changeTaskName',
-      {
-        method: 'POST',
-        headers: {
-          "Content-Type": 'application/json'
-        },
-        body: JSON.stringify({
-          id: id,
-          taskName: updatedTasKName
-        })
-      }
-    )}catch(err){
+        {
+          method: 'POST',
+          headers: {
+            "Content-Type": 'application/json'
+          },
+          body: JSON.stringify({
+            id: id,
+            taskName: updatedTasKName
+          })
+        }
+      )
+    } catch (err) {
       console.log(err)
     }
     getTasks()
@@ -270,7 +271,7 @@ function Main() {
   async function deleteTaskFunction(event) {
     const id = event.target.id;
     console.log(id)
-    const deleteTask = await fetch(baseURL + '/deleteTask',
+    const deleteTask = await fetch('https://amused-respect-production.up.railway.app/createUser',
       {
         method: 'POST',
         headers: {
@@ -332,8 +333,8 @@ function Main() {
               {number + 1}
             </td>
             <td className={`each-task-name`}>
-              <input type="text" defaultValue={task.taskName} onKeyUp={handleEnter} onChange={updateTaskNameTimer} 
-              className='input-task-name' id={`${task.id}`} />
+              <input type="text" defaultValue={task.taskName} onKeyUp={handleEnter} onChange={updateTaskNameTimer}
+                className='input-task-name' id={`${task.id}`} />
             </td>
             <td className={`each-task-status`}>
               <select name='status' id={`status ${task.id}`} defaultValue={task.taskStatus} onChange={updateTasKStatus}  >
