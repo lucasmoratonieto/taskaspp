@@ -15,7 +15,7 @@ const db = createClient({
 
 const app = express()
 app.use(cors({
-  origin: 'https://lucastaskapp.netlify.app'
+  origin: 'https://lucastaskapp.netlify.app/login'
 }));
 
 app.use(express.json())
