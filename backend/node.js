@@ -2,6 +2,10 @@ import express from 'express'
 import cors from 'cors'
 import { createClient } from "@libsql/client";
 import dotenv from 'dotenv';
+const app = express()
+app.use(cors({
+  origin: "*"
+}));
 dotenv.config()
 
 let userLogIn = false
@@ -13,10 +17,6 @@ const db = createClient({
   authToken: process.env.DB_TOKEN
 })
 
-const app = express()
-app.use(cors({
-  origin: "*"
-}));
 
 app.use(express.json())
 app.use(express.static('public'))
