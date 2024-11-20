@@ -74,7 +74,6 @@ function Login() {
 
         {
           method: 'POST',
-          mode: "no-cors",
           headers: {
             "Content-Type": 'application/json'
           },
