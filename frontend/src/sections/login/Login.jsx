@@ -70,7 +70,7 @@ function Login() {
     userCredentials.userPassword = password
 
     async function postNewUser() {
-      const res = await fetch(baseURL + '/createUser',
+      const res = await fetch('https://amused-respect-production.up.railway.app/createUser',
 
         {
           method: 'POST',
