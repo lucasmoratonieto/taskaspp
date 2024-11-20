@@ -92,6 +92,7 @@ app.post("/submit", async (req, res) => {
 })
 
 app.post("/createUser", async (req, res) => {
+  res.header('Access-Control-Allow-Origin', '*')
   const user = req.body.user;
   userName = req.body.user.userName;
   const userPassword = req.body.user.userPassword;
