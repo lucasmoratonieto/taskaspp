@@ -99,14 +99,14 @@ function Login() {
       <div className='form'>
         <div className='user-pasword login-area'>
           <label className='login-text'>
-            <span>Username</span>
+            <span className='text-before-input username-before-input'>Username</span>
           </label>
           <input className='text-area login' placeholder='Username' required ref={userNameRef}></input>
         </div>
         <div className='user-pasword
          password-area'>
           <label className='login-text'>
-            <span>Password</span>
+            <span className='text-before-input password-before-input'>Password</span>
           </label>
           <input className='text-area password' placeholder='Password' autoComplete='off' required ref={passwordRef} onKeyUp={handleEnter} type='password'></input>
         </div>

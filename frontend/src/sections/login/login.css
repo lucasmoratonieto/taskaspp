@@ -10,14 +10,6 @@
   width: 100%;
 }
 
-/* @media screen and (max-width: 550px){ 
-  body{
-    margin: 20px;
-      max-width: 400px;
-      min-width: 300px;   
-  }
-} */
-
 .welcome-msg{
   font-size:50px;
   margin-bottom: 70px;
@@ -27,13 +19,14 @@
 .form{
   display: flex;
   flex-direction: column;
-  align-items: end;
-  align-items: center;
+  text-align: left;
 }
-
-.login-text{
+.text-before-input{
+  font-weight: bold;
   font-size: 35px;
 }
+
+
 
 .user-pasword{
   display: flex;
@@ -61,6 +54,10 @@
     padding: 10px;
     margin-top: 10px;
     margin-bottom: 10px;
+  }
+  .text-before-input{
+    font-size: 25px;
+
   }
 }
 

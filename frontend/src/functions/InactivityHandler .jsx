@@ -24,6 +24,7 @@ const InactivityHandler = ({ timeout = 300000 }) => { // Timeout in milliseconds
       console.log("User logged out due to inactivity.");
       // Clear user session (localStorage, cookies, etc.)
       localStorage.removeItem("user");
+      logOffFunction()
       navigate("/login");
     };
 
@@ -42,9 +43,10 @@ const InactivityHandler = ({ timeout = 300000 }) => { // Timeout in milliseconds
       window.removeEventListener("keypress", resetTimer);
       window.removeEventListener("click", resetTimer);
     };
+    // eslint-disable-next-line
   }, [timeout, navigate]);
-
   
+  async function logOffFunction() {
     async function logOff() {
       const res = await fetch(baseURL + '/logOff',
         {
@@ -56,7 +58,7 @@ const InactivityHandler = ({ timeout = 300000 }) => { // Timeout in milliseconds
     }
     logOff()
     navigate('/login')
-  
+  }
 
   return isActive ? (
     ''
