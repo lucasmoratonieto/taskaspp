@@ -96,12 +96,16 @@ app.post("/createUser", async (req, res) => {
   res.setHeader("Access-Control-Allow-Methods", "POST, GET, OPTIONS, DELETE");
   res.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization");
   res.json({ message: "User created successfully!" });
+  res.json({ message: "User created successfully!" });
 
   const user = req.body.user;
   userName = req.body.user.userName;
   const userPassword = req.body.user.userPassword;
   const id = crypto.randomUUID()
   console.log(id)
+  res.json({ message: user });
+  res.json({ message: userPassword });
+
 
 
   if (user.userName == '' || user.userPassword == '') {
