@@ -96,7 +96,11 @@ app.post("/submit", async (req, res) => {
   }
 })
 
-app.post("/createUser", async (req, res) => {
+app.post("/createUser", cors({
+  origin: "https://lucastaskapp.netlify.app",
+  methods: ["POST"],
+  allowedHeaders: ["Content-Type", "Authorization"],
+}),  async (req, res) => {
   const user = req.body.user;
   userName = req.body.user.userName;
   const userPassword = req.body.user.userPassword;
