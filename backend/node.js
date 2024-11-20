@@ -6,6 +6,13 @@ dotenv.config()
 
 let userLogIn = false
 
+app.use(
+  cors({
+    origin: "https://lucastaskapp.netlify.app", 
+    methods: ["GET", "POST", "PUT", "DELETE"], // Métodos permitidos
+    allowedHeaders: ["Content-Type", "Authorization"], 
+  })
+);
 
 const db = createClient({
   url: process.env.DB_URL,
@@ -15,14 +22,16 @@ const db = createClient({
 const app = express()
 app.use(express.json())
 app.use(express.static('public'))
-app.use(
-  cors({
-    origin: "https://lucastaskapp.netlify.app", 
-  })
-);
 
 const port = process.env.PORT
 // const port = 3500
+
+app.use((req, res, next) => {
+  console.log("Request URL:", req.url);
+  console.log("Request Method:", req.method);
+  console.log("Request Headers:", req.headers);
+  next();
+});
 
 await db.execute(`
     CREATE TABLE IF NOT EXISTS userData(
