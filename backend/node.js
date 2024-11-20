@@ -6,7 +6,11 @@ const app = express()
 app.use(cors({
   origin: "*"
 }));
+
 app.options("*", cors());
+
+app.set("trust proxy", true);
+
 
 dotenv.config()
 
