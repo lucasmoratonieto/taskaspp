@@ -15,7 +15,11 @@ const db = createClient({
 const app = express()
 app.use(express.json())
 app.use(express.static('public'))
-app.use(cors())
+app.use(
+  cors({
+    origin: "https://lucastaskapp.netlify.app", 
+  })
+);
 
 const port = process.env.PORT
 // const port = 3500
