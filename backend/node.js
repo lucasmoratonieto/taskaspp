@@ -26,12 +26,6 @@ app.use(express.static('public'))
 const port = process.env.PORT
 // const port = 3500
 
-app.use((req, res, next) => {
-  console.log("Request URL:", req.url);
-  console.log("Request Method:", req.method);
-  console.log("Request Headers:", req.headers);
-  next();
-});
 
 await db.execute(`
     CREATE TABLE IF NOT EXISTS userData(
