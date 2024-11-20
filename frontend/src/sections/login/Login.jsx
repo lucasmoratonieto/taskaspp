@@ -86,7 +86,7 @@ function Login() {
         }
       )
       if (res.status === 200) {
-        navigate('/')
+        // navigate('/')
       }
     }
     postNewUser()
