@@ -6,13 +6,7 @@ dotenv.config()
 
 let userLogIn = false
 
-app.use(
-  cors({
-    origin: "https://lucastaskapp.netlify.app", 
-    methods: ["GET", "POST", "PUT", "DELETE"], // Métodos permitidos
-    allowedHeaders: ["Content-Type", "Authorization"], 
-  })
-);
+
 
 const db = createClient({
   url: process.env.DB_URL,
@@ -20,6 +14,13 @@ const db = createClient({
 })
 
 const app = express()
+app.use(
+  cors({
+    origin: "https://lucastaskapp.netlify.app", 
+    methods: ["GET", "POST", "PUT", "DELETE"], // Métodos permitidos
+    allowedHeaders: ["Content-Type", "Authorization"], 
+  })
+);
 app.use(express.json())
 app.use(express.static('public'))
 

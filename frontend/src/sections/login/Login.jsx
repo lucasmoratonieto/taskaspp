@@ -56,7 +56,7 @@ function Login() {
   }
 
   function createUser(e) {
-    // e.preventDefault()
+    e.preventDefault()
     const userName = userNameRef.current.value
     const password = passwordRef.current.value
 
