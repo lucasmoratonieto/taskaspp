@@ -17,10 +17,12 @@ const app = express()
 app.use(
   cors({
     origin: "https://lucastaskapp.netlify.app", 
-    methods: ["GET", "POST", "PUT", "DELETE"], // Métodos permitidos
+    methods: ["GET", "POST", "PUT", "DELETE"], 
     allowedHeaders: ["Content-Type", "Authorization"], 
   })
 );
+app.options("*", cors());
+
 app.use(express.json())
 app.use(express.static('public'))
 
@@ -164,7 +166,6 @@ app.get("/userName", async (req, res) =>{
 
 app.get("/getTasks", async (req, res) =>{
   if (userLogIn){
-
     const allTasks = await db.execute(`SELECT * FROM task`)
     res.json(allTasks.rows)
     // console.log(allTasks)
