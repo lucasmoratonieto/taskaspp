@@ -92,7 +92,6 @@ app.post("/submit", async (req, res) => {
     }  else {
       res.status(400).json({message:"User Not registered"})
       userLogIn = false
-
     }
   }
 })

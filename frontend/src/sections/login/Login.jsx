@@ -53,6 +53,7 @@ function Login() {
       setIsloading(true)
     }
     checkUser()
+
   }
 
   function createUser(e) {
@@ -70,6 +71,7 @@ function Login() {
 
     async function postNewUser() {
       const res = await fetch(baseURL + '/createUser',
+
         {
           method: 'POST',
           headers: {
