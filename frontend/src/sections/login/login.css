@@ -64,6 +64,8 @@
 .button-area{
   display: flex;
   gap: 10px;
+  justify-content: end;
+  align-items: end;
 }
 .button{
   position: relative;

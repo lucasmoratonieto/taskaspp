@@ -54,7 +54,13 @@
   .tasks{
     width: 350px;
   }
-  
+  .options{
+    position: relative;
+  }
+  .optionsTaskMenu{
+    
+    right: 25px;
+  }
 }
 
 .tasks{
@@ -202,3 +208,22 @@ button{
 .delete-button:hover{
   background-color: #484848;
 }
+
+.optionsTaskMenu{
+  position: absolute;
+  align-items: center;
+  justify-content: center;
+  z-index: 2;
+  background: #484848;
+  border-radius: 25px;
+  padding: 10px;
+  font-size: smaller;
+  min-width: 75px;
+  
+}
+
+.hiden-optionsTaskMenu{
+  display: none;
+}
+
+

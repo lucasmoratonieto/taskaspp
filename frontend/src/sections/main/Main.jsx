@@ -2,10 +2,13 @@ import { useEffect, useState } from 'react';
 import "react-datepicker/dist/react-datepicker.css";
 import './main.css'
 import DatePicker from "react-datepicker";
+import { loader } from '../../assets/svg/icons.js';
 
 import { useNavigate } from 'react-router-dom';
-import { threeDots } from '../../assets/icons/icons.js';
+import { threeDots } from '../../assets/svg/icons.js';
 import { baseURL } from '../../assets/constanst/constants.js'
+
+
 
 
 
@@ -15,7 +18,8 @@ function Main() {
   const [allTasks, setAllTasks] = useState([])
   const [userNameState, setUserNameState] = useState('Not Registre, Please log in')
   const navigate = useNavigate();
-  // let userName = ''
+  const [isLoading, setIsloading] = useState(false)
+  const [typingTimeout, setTypingTimeout] = useState(null);
 
   const [startDate, setStartDate] = useState(new Date());
 
@@ -69,13 +73,25 @@ function Main() {
     navigate('/login')
   }
 
-
-  const updateTasKName = async (changeTaskName) => {
-    const id = changeTaskName.id
-    const updatedTasKName = changeTaskName.value
+  function updateTaskNameTimer(e) {
+    const id = e.target.id
+    const updatedTasKName = e.target.value
     console.log(id)
     console.log(updatedTasKName)
-    const res = await fetch(baseURL + '/changeTaskName',
+    if (typingTimeout) {
+      clearTimeout(typingTimeout);
+    }
+    const newTimeout = setTimeout(() => {
+      updateTasKName(id, updatedTasKName);
+    }, 1000);
+    setTypingTimeout(newTimeout);
+  }
+
+  const updateTasKName = async (id, updatedTasKName) => {
+    console.log(id)
+    console.log(updatedTasKName)
+    try{
+      await fetch(baseURL + '/changeTaskName',
       {
         method: 'POST',
         headers: {
@@ -86,11 +102,22 @@ function Main() {
           taskName: updatedTasKName
         })
       }
-    )
-    const postChangeTaskName = await res.json()
-    console.log(postChangeTaskName)
+    )}catch(err){
+      console.log(err)
+    }
     getTasks()
+  }
 
+
+  function handleEnter(e) {
+    const id = e.target.id
+    const updatedTasKName = e.target.value
+    console.log(id)
+    console.log(updatedTasKName)
+
+    if (event.keyCode === 13 || event.wich === 13) {
+      updateTasKName(id, updatedTasKName)
+    }
   }
 
 
@@ -200,23 +227,18 @@ function Main() {
     getTasks()
 
   }
-  function handleEnter(event) {
-    const changedRelevance = event.target;
 
-    if (event.keyCode === 13 || event.wich === 13) {
-      updateTasKName(changedRelevance)
-    }
-  }
 
-  function addNewTask() {
+  async function addNewTask() {
+    setIsloading(true)
 
     const task = {
       "taskName": "",
       "taskStatus": "To do",
       "taskRelevance": "Low"
     }
+    try {
 
-    async function postNewTask() {
       await fetch(baseURL + '/newTask',
         {
           method: 'POST',
@@ -229,11 +251,20 @@ function Main() {
           })
         }
       )
-    }
-    postNewTask()
-    setTimeout(() => {
       getTasks()
-    }, 200)
+      setIsloading(false)
+    } catch (err) {
+      console.log(err)
+    }
+
+  }
+
+  function handleOptionsTask(event) {
+    const id = event.target.id;
+
+    const setVisibleOptionTask = document.getElementById('options' + id)
+    setVisibleOptionTask.classList.toggle('hiden-optionsTaskMenu')
+    setVisibleOptionTask.classList.toggle('optionsTaskMenu')
   }
 
   async function deleteTaskFunction(event) {
@@ -252,7 +283,6 @@ function Main() {
     const taskDeleted = await deleteTask.json()
     console.log(taskDeleted)
     getTasks()
-
   }
 
 
@@ -302,7 +332,8 @@ function Main() {
               {number + 1}
             </td>
             <td className={`each-task-name`}>
-              <input type="text" defaultValue={task.taskName} onKeyUp={handleEnter} /*onChange={handleMouse} */ className='input-task-name' id={`${task.id}`} />
+              <input type="text" defaultValue={task.taskName} onKeyUp={handleEnter} onChange={updateTaskNameTimer} 
+              className='input-task-name' id={`${task.id}`} />
             </td>
             <td className={`each-task-status`}>
               <select name='status' id={`status ${task.id}`} defaultValue={task.taskStatus} onChange={updateTasKStatus}  >
@@ -323,17 +354,25 @@ function Main() {
               <DatePicker placeholderText="Selecciona una fecha" className={`react-datepicker ${task.id}`} selected={startDate} onChange={updateTasKDate} dateFormat="dd-MM-yyyy" // Configura el formato deseado
               />
             </td>
-            <td>
-              <button className={`delete-button ${task.id}`} id={task.id} onClick={deleteTaskFunction}>
-                <img src={threeDots} alt={`button${task.id}`} />
+            <td className='options'>
+              {/* <button className={`delete-button ${task.id}`} id={task.id} onClick={deleteTaskFunction}> */}
+              <button className={`delete-button ${task.id}`} id={task.id} onClick={handleOptionsTask}>
+                <img id={task.id} src={threeDots} alt={`button${task.id}`} />
               </button>
+              <div id={`options${task.id}`} className={`hiden-optionsTaskMenu`}>
+                <button id={`${task.id}`} onClick={deleteTaskFunction}>
+                  Delete Task
+                </button>
+              </div>
             </td>
           </tr>
         ))}
         <div className='añadir-tarea'>
-          <button className='button-añadir-tarea' onClick={addNewTask}>
-            Añadir tarea...
-          </button>
+          {isLoading ? <img className='loader' src={loader} alt={loader} width={50} /> :
+            <button className='button-añadir-tarea' onClick={addNewTask}>
+              Añadir tarea...
+            </button>
+          }
         </div>
       </table>
     </section>

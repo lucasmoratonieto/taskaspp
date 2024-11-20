@@ -2,15 +2,11 @@ import { useRef, useState } from 'react';
 import './login.css';
 import { useNavigate } from 'react-router-dom';
 import { baseURL } from '../../assets/constanst/constants.js'
+import LoadingScreen from '../../assets/constanst/LoadingScreen.jsx';
 
 
 function Login() {
-  // let serverAnwserToEnter = ''
-  // let userDataPosted = ''
-
-
-
-
+  const [isLoading, setIsloading] = useState(false)
   const userNameRef = useRef(null)
   const passwordRef = useRef(null)
 
@@ -31,25 +27,30 @@ function Login() {
     userCredentials.userPassword = password
 
     async function checkUser() {
-      const res = await fetch(baseURL + '/submit',
-        {
-          method: 'POST',
-          headers: {
-            "Content-Type": 'application/json'
-          },
-          body: JSON.stringify({
-            user: userCredentials
-          })
-        }
-      )
-      // let serverAnwserToEnter = await res.json()
+      setIsloading(true)
+      try {
 
-      if (res.status === 200) {
-        navigate('/')
+        const res = await fetch(baseURL + '/submit',
+          {
+            method: 'POST',
+            headers: {
+              "Content-Type": 'application/json'
+            },
+            body: JSON.stringify({
+              user: userCredentials
+            })
+          }
+        )
+        if (res.status === 200) {
+          navigate('/')
+        }
+        if (res.status === 400) {
+          setcheckPassword(true)
+        }
+      } catch (err) {
+        console.log(err)
       }
-      if (res.status === 400) {
-        setcheckPassword(true)
-      }
+      setIsloading(true)
     }
     checkUser()
   }
@@ -92,41 +93,45 @@ function Login() {
     }
   }
   return (
-    <div className="body">
-      <label className='welcome-msg'>
-        <h1>Welcome, please sign in </h1>
-      </label>
-      <div className='form'>
-        <div className='user-pasword login-area'>
-          <label className='login-text'>
-            <span className='text-before-input username-before-input'>Username</span>
+    <section>
+      {isLoading ? (<LoadingScreen/>) :
+        <div className="body">
+          <label className='welcome-msg'>
+            <h1>Welcome, please sign in </h1>
           </label>
-          <input className='text-area login' placeholder='Username' required ref={userNameRef}></input>
-        </div>
-        <div className='user-pasword
+          <div className='form'>
+            <div className='user-pasword login-area'>
+              <label className='login-text'>
+                <span className='text-before-input username-before-input'>Username</span>
+              </label>
+              <input className='text-area login' placeholder='Username' required ref={userNameRef}></input>
+            </div>
+            <div className='user-pasword
          password-area'>
-          <label className='login-text'>
-            <span className='text-before-input password-before-input'>Password</span>
-          </label>
-          <input className='text-area password' placeholder='Password' autoComplete='off' required ref={passwordRef} onKeyUp={handleEnter} type='password'></input>
-        </div>
-        <div className='button-area'>
-          <div className='button button-submit'>
-            <a href='/' className='submit-link' onClick={submitInfo}>
-              Submit
-            </a>
+              <label className='login-text'>
+                <span className='text-before-input password-before-input'>Password</span>
+              </label>
+              <input className='text-area password' placeholder='Password' autoComplete='off' required ref={passwordRef} onKeyUp={handleEnter} type='password'></input>
+            </div>
+            <div className='button-area'>
+              <div className='button button-submit'>
+                <a href='/' className='submit-link' onClick={submitInfo}>
+                  Submit
+                </a>
+              </div>
+              <div>
+                <a href="/" className='button button-create' onClick={createUser}>
+                  Create User
+                </a>
+              </div>
+            </div>
           </div>
-          <div>
-            <a href="/" className='button button-create' onClick={createUser}>
-              Create User
-            </a>
+          <div className={`incorrect-password ${checkPassword ? '' : 'hide-incorrect-password'}`}>
+            Incorrect Username or Password
           </div>
         </div>
-      </div>
-      <div className={`incorrect-password ${checkPassword ? '' : 'hide-incorrect-password'}`}>
-        Incorrect Username or Password
-      </div>
-    </div>
+      }
+    </section>
   );
 }
 
