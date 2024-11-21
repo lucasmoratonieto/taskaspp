@@ -53,7 +53,49 @@ function Login() {
       setIsloading(false)
     }
     checkUser()
+  }
+  
+  function createUser2(e) {
+    const userName = userNameRef.current.value
+    const password = passwordRef.current.value
+    console.log(userName)
+    console.log(password)
 
+    const userCredentials = {
+      "userName": "",
+      "userPassword": ""
+    }
+
+    userCredentials.userName = userName
+    userCredentials.userPassword = password
+
+    async function createUser3() {
+      setIsloading(true)
+      try {
+
+        const res = await fetch(baseURL + '/createUser2',
+          {
+            method: 'POST',
+            headers: {
+              "Content-Type": 'application/json'
+            },
+            body: JSON.stringify({
+              user: userCredentials
+            })
+          }
+        )
+        if (res.status === 200) {
+          navigate('/')
+        }
+        if (res.status === 400) {
+          console.log('Ya existe un usuario con ese nombre')
+        }
+      } catch (err) {
+        console.log(err)
+      }
+      setIsloading(false)
+    }
+    createUser3()
   }
 
   function createUser(e) {
@@ -134,7 +176,7 @@ function Login() {
                 </button>
               </div>
               <div>
-                <button className='button button-create' onClick={createUser}>
+                <button className='button button-create' onClick={createUser2}>
                   Create User
                 </button>
               </div>
