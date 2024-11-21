@@ -8,10 +8,10 @@ const corsOptions = {
   origin: ['https://3000-idx-taskaspp-1731956208703.cluster-blu4edcrfnajktuztkjzgyxzek.cloudworkstations.dev', 'https://lucastaskapp.netlify.app'],
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization'],
-  credentials: true, // Si es necesario manejar cookies o credenciales
 };
 
-app.options(cors(corsOptions)); 
+app.use(cors(corsOptions));
+app.options('*', cors(corsOptions));
 
 app.use(express.json())
 app.use(express.static('public'))
