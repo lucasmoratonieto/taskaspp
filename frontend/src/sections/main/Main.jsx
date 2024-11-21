@@ -34,24 +34,29 @@ function Main() {
 
   }
   const getUserName = async () => {
-    const res = await fetch(baseURL + '/userName',
+    try{
+
+      const res = await fetch(baseURL + '/userName',
       {
         method: 'GET'
       }
     )
-    const status = await res.status
-
+    const status =  res.status
+    
     if (status !== 400) {
-
+      
       // console.log(status)
       const getUserNameGet = await res.json()
       const userName = getUserNameGet[0].userName
-
+      
       setUserNameState(userName);
       getTasks()
     } else if (status === 400) {
       navigate('/login')
     }
+  }catch(err){
+    console.log(err)
+  }
   }
 
   useEffect(() => {

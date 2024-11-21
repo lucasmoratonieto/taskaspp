@@ -50,14 +50,14 @@ function Login() {
       } catch (err) {
         console.log(err)
       }
-      setIsloading(true)
+      setIsloading(false)
     }
     checkUser()
 
   }
 
   function createUser(e) {
-    e.preventDefault()
+    // e.preventDefault()
     const userName = userNameRef.current.value
     const password = passwordRef.current.value
 
@@ -70,24 +70,32 @@ function Login() {
     userCredentials.userPassword = password
 
     async function postNewUser() {
-      const res = await fetch('https://amused-respect-production.up.railway.app/createUser',
+      setIsloading(true)
+      try {
 
-        {
-          method: 'POST',
-          headers: {
-            "Content-Type": 'application/json'
-          },
-          body: JSON.stringify({
-            user: {
-              userName: userName,
-              password: password
-            }
-          })
+        const res = await fetch(baseURL + '/createUser',
+          {
+            method: 'POST',
+            headers: {
+              "Content-Type": 'application/json'
+            },
+            body: JSON.stringify({
+              user: {
+                user: userCredentials
+              }
+            })
+          }
+        )
+        if (res.status === 200) {
+          navigate('/')
         }
-      )
-      if (res.status === 200) {
-        // navigate('/')
+        if (res.status === 400) {
+          console.log('Ya existe un usuario con ese nombre')
+        }
+      } catch (err) {
+        console.log(err)
       }
+      setIsloading(false)
     }
     postNewUser()
   }

@@ -10,7 +10,7 @@ app.use(express.static('public'))
 
 dotenv.config()
 
-let userLogIn = false
+let userLogIn = true
 
 const db = createClient({
   url: process.env.DB_URL,
@@ -144,7 +144,6 @@ app.get("/logOff", async (req, res) => {
 
 app.get("/userName", async (req, res) => {
   if (userLogIn) {
-
     const getUserName = await db.execute({
       sql: `SELECT userName FROM userData WHERE userName = :userName`,
       args: { userName }
