@@ -88,9 +88,9 @@ app.post("/createUser", async (req, res) => {
 
 
   // const user = req.body.user;
-  userName = req.body.user.userName;
-  const userPassword = req.body.user.userPassword;
-  const id = crypto.randomUUID()
+  // userName = req.body.user.userName;
+  // const userPassword = req.body.user.userPassword;
+  // const id = crypto.randomUUID()
   res.status(400).json({ message: "Acceso" })
 
 
