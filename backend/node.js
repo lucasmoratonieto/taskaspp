@@ -84,16 +84,15 @@ app.post("/submit", async (req, res) => {
 
 app.post("/createUser", async (req, res) => {
 
-  res.status(400).json({ message: "User Not registered" })
+
 
 
   // const user = req.body.user;
-  // userName = req.body.user.userName;
-  // const userPassword = req.body.user.userPassword;
-  // const id = crypto.randomUUID()
-  // console.log(userName)
-  // console.log(userPassword)
-  // console.log(id)
+  userName = req.body.user.userName;
+  const userPassword = req.body.user.userPassword;
+  const id = crypto.randomUUID()
+  res.status(200).json({ message: userName })
+
 
   // if (user.userName == '' || user.userPassword == '') {
   //   res.status(400).json({ message: "Please enter a User Value" })
