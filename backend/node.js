@@ -97,18 +97,15 @@ app.post("/createUser", async (req, res) => {
   if (userName == '' || userPassword == '') {
     res.status(400).json({ message: "Please enter a User Value" })
   } else {
-    res.status(200).json({ message: "Hasta aqui" })
-
     const checkUserExist = await db.execute({
       sql: `SELECT * FROM userData
             WHERE userName = :userName;`,
       args: { userName }
     })
 
-    if (checkUserExist.rows == '') {
+    if (checkUserExist.rows === '') {
 
       userLogIn = true
-
       await db.execute({
         sql: `INSERT INTO userData 
               (id, userName, userPassword)
