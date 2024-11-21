@@ -2,6 +2,7 @@ import express from 'express'
 import cors from 'cors'
 import { createClient } from "@libsql/client";
 import dotenv from 'dotenv';
+import { v4 as uuidv4 } from 'uuid';
 const app = express()
 
 
@@ -91,6 +92,7 @@ app.post("/createUser", async (req, res) => {
   userName = req.body.user.userName;
   const userPassword = req.body.user.userPassword;
   // const id = crypto.randomUUID()
+  const id = uuidv4()
   res.status(400).json({ message: "Acceso" })
 
 
