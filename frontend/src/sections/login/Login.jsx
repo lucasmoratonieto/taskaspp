@@ -72,7 +72,7 @@ function Login() {
       setIsloading(true)
       try {
 
-        const res = await fetch(baseURL + '/createUser2',
+        const res = await fetch(baseURL + '/submit',
           {
             method: 'POST',
             headers: {
