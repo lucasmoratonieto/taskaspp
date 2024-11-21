@@ -98,49 +98,49 @@ function Login() {
     createUser3()
   }
 
-  function createUser(e) {
-    // e.preventDefault()
-    const userName = userNameRef.current.value
-    const password = passwordRef.current.value
+  // function createUser(e) {
+  //   // e.preventDefault()
+  //   const userName = userNameRef.current.value
+  //   const password = passwordRef.current.value
 
-    const userCredentials = {
-      "userName": "",
-      "userPassword": ""
-    }
+  //   const userCredentials = {
+  //     "userName": "",
+  //     "userPassword": ""
+  //   }
 
-    userCredentials.userName = userName
-    userCredentials.userPassword = password
+  //   userCredentials.userName = userName
+  //   userCredentials.userPassword = password
 
-    async function postNewUser() {
-      setIsloading(true)
-      try {
+  //   async function postNewUser() {
+  //     setIsloading(true)
+  //     try {
 
-        const res = await fetch(baseURL + '/createUser',
-          {
-            method: 'POST',
-            headers: {
-              "Content-Type": 'application/json'
-            },
-            body: JSON.stringify({
-              user: {
-                user: userCredentials
-              }
-            })
-          }
-        )
-        if (res.status === 200) {
-          navigate('/')
-        }
-        if (res.status === 400) {
-          console.log('Ya existe un usuario con ese nombre')
-        }
-      } catch (err) {
-        console.log(err)
-      }
-      setIsloading(false)
-    }
-    postNewUser()
-  }
+  //       const res = await fetch(baseURL + '/createUser',
+  //         {
+  //           method: 'POST',
+  //           headers: {
+  //             "Content-Type": 'application/json'
+  //           },
+  //           body: JSON.stringify({
+  //             user: {
+  //               user: userCredentials
+  //             }
+  //           })
+  //         }
+  //       )
+  //       if (res.status === 200) {
+  //         navigate('/')
+  //       }
+  //       if (res.status === 400) {
+  //         console.log('Ya existe un usuario con ese nombre')
+  //       }
+  //     } catch (err) {
+  //       console.log(err)
+  //     }
+  //     setIsloading(false)
+  //   }
+  //   postNewUser()
+  // }
 
 
   function handleEnter(event) {
