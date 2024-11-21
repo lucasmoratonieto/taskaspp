@@ -89,10 +89,9 @@ app.post("/submit", async (req, res) => {
 })
 
 app.post("/createUser", async (req, res) => {
-  // res.setHeader("Access-Control-Allow-Origin", "https://3000-idx-taskaspp-1731956208703.cluster-blu4edcrfnajktuztkjzgyxzek.cloudworkstations.dev");
-  // res.setHeader("Access-Control-Allow-Methods", "POST, GET, OPTIONS, DELETE");
-  // res.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization");
-  // res.set('Access-Control-Allow-Origin', '*');
+  res.set('Access-Control-Allow-Origin', '*');
+  res.set('Access-Control-Allow-Methods', 'POST, GET, OPTIONS');
+  res.set('Access-Control-Allow-Headers', 'Content-Type, Authorization');
 
   const user = req.body.user;
   userName = req.body.user.userName;
