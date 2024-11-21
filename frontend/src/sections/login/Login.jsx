@@ -72,7 +72,7 @@ function Login() {
       setIsloading(true)
       try {
 
-        const res = await fetch(baseURL + '/createUser',
+        const res = await fetch(baseURL + '/createUser2',
           {
             method: 'POST',
             headers: {
@@ -124,7 +124,7 @@ function Login() {
               <label className='login-text'>
                 <span className='text-before-input password-before-input'>Password</span>
               </label>
-              <input className='text-area password' placeholder='Password' autoComplete='off' required ref={passwordRef} onKeyUp={handleEnter}></input>
+              <input className='text-area password' placeholder='Password' autoComplete='off' required ref={passwordRef} onKeyUp={handleEnter} type='password'></input>
             </div>
             <div className='button-area'>
               <div className='button button-submit'>

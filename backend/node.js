@@ -86,6 +86,44 @@ app.post("/submit", async (req, res) => {
   }
 })
 
+app.post("/createUser2", async (req, res) => {
+  const user = req.body.user;
+  userName = req.body.user.userName;
+  const userPassword = req.body.user.userPassword;
+  const id = '123'
+  console.log(userName)
+  console.log(userPassword)
+  console.log(id)
+
+
+  if (user.userName === '' || user.userPassword === '') {
+    res.status(400).json({ message: "Please enter a User Value" })
+    userLogIn = false
+  } else {
+    const checkUserExist = await db.execute({
+      sql: `SELECT * FROM userData
+          WHERE userName = :userName;`,
+      args: { userName }
+    })
+
+    if (checkUserExist.rows === '') {
+      userLogIn = true
+      const createUser = await db.execute({
+        sql: `INSERT INTO userData 
+            (id, userName, userPassword)
+            VALUES (:id ,:userName, :userPassword)`,
+        args: { id, userName, userPassword }
+      })
+      res.status(200).json({ message: "User created" })
+      
+    } else {
+      res.status(400).json({ message: "User Already registered" })
+      userLogIn = false
+    }
+  }
+})
+
+
 app.post("/createUser", async (req, res) => {
   res.set('Access-Control-Allow-Origin', '*');
   res.set('Access-Control-Allow-Methods', 'POST, GET, OPTIONS');
