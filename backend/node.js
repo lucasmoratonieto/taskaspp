@@ -5,7 +5,7 @@ import dotenv from 'dotenv';
 const app = express()
 
 const corsOptions = {
-  origin: ['https://3000-idx-taskaspp-1731956208703.cluster-blu4edcrfnajktuztkjzgyxzek.cloudworkstations.dev', 'https://tuapp.com'], // Asegúrate de listar todos los dominios permitidos
+  origin: ['https://3000-idx-taskaspp-1731956208703.cluster-blu4edcrfnajktuztkjzgyxzek.cloudworkstations.dev', 'https://lucastaskapp.netlify.app'], // Asegúrate de listar todos los dominios permitidos
   methods: ['GET', 'POST', 'PUT', 'DELETE'],
   allowedHeaders: ['Content-Type', 'Authorization'],
 };
