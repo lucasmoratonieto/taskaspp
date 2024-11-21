@@ -10,7 +10,7 @@ app.use(express.static('public'))
 
 dotenv.config()
 
-let userLogIn = true
+let userLogIn = false
 
 const db = createClient({
   url: process.env.DB_URL,
@@ -84,19 +84,14 @@ app.post("/createUser", async (req, res) => {
   // res.setHeader("Access-Control-Allow-Origin", "*"); // O usa tu dominio específico
   // res.setHeader("Access-Control-Allow-Methods", "POST, GET, OPTIONS, DELETE");
   // res.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization");
-  res.json({ message: "User created successfully!" });
-  res.json({ message: "User created successfully!" });
 
   const user = req.body.user;
   userName = req.body.user.userName;
   const userPassword = req.body.user.userPassword;
-  // const id = crypto.randomUUID()
-  const id = '1234'
-  console.log(id)
+  const id = crypto.randomUUID()
   res.json({ message: user });
   res.json({ message: userPassword });
-
-
+  res.json({ message: 'User credentials' });
 
   if (user.userName == '' || user.userPassword == '') {
     res.status(400).json({ message: "Please enter a User Value" })
@@ -122,12 +117,13 @@ app.post("/createUser", async (req, res) => {
       res.status(200).json({ message: userPassword })
     } else {
       res.status(400).json({ message: "User already created" })
+      console.log('user alerady created')
     }
 
   }
 
-  res.status(400).json({ message: err })
-  console.log(err)
+  res.status(400).json({ message: 'User not created' })
+  console.log('User not created')
 
 
 })
