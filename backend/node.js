@@ -104,19 +104,21 @@ app.post("/createUser", async (req, res) => {
     })
 
     if (checkUserExist.rows == '') {
-      userLogIn = true
+      res.status(200).json({ message: "Hasta aqui" })
 
-      await db.execute({
-        sql: `INSERT INTO userData 
-            (id, userName, userPassword)
-            VALUES (:id ,:userName, :userPassword)`,
-        args: { id, userName, userPassword }
-      })
-      res.status(200).json({ message: "User created" })
+      // userLogIn = true
 
-    } else {
-      res.status(400).json({ message: "User already created" })
-      console.log('user alerady created')
+      //   await db.execute({
+      //     sql: `INSERT INTO userData 
+      //         (id, userName, userPassword)
+      //         VALUES (:id ,:userName, :userPassword)`,
+      //     args: { id, userName, userPassword }
+      //   })
+      //   res.status(200).json({ message: "User created" })
+
+      // } else {
+      //   res.status(400).json({ message: "User already created" })
+      //   console.log('user alerady created')
     }
 
   }
