@@ -5,12 +5,13 @@ import dotenv from 'dotenv';
 const app = express()
 
 const corsOptions = {
-  origin: ['https://3000-idx-taskaspp-1731956208703.cluster-blu4edcrfnajktuztkjzgyxzek.cloudworkstations.dev', 'https://lucastaskapp.netlify.app'], // Asegúrate de listar todos los dominios permitidos
-  methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  origin: ['https://3000-idx-taskaspp-1731956208703.cluster-blu4edcrfnajktuztkjzgyxzek.cloudworkstations.dev', 'https://lucastaskapp.netlify.app'],
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization'],
+  credentials: true, // Si es necesario manejar cookies o credenciales
 };
 
-app.use(cors(corsOptions));
+app.options('*', cors(corsOptions)); 
 
 app.use(express.json())
 app.use(express.static('public'))
@@ -91,15 +92,12 @@ app.post("/createUser", async (req, res) => {
   // res.setHeader("Access-Control-Allow-Origin", "https://3000-idx-taskaspp-1731956208703.cluster-blu4edcrfnajktuztkjzgyxzek.cloudworkstations.dev");
   // res.setHeader("Access-Control-Allow-Methods", "POST, GET, OPTIONS, DELETE");
   // res.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization");
-  res.set('Access-Control-Allow-Origin', '*');
+  // res.set('Access-Control-Allow-Origin', '*');
 
   const user = req.body.user;
   userName = req.body.user.userName;
   const userPassword = req.body.user.userPassword;
   const id = crypto.randomUUID()
-  res.json({ message: user });
-  res.json({ message: userPassword });
-  res.json({ message: 'User credentials' });
 
   if (user.userName == '' || user.userPassword == '') {
     res.status(400).json({ message: "Please enter a User Value" })
@@ -111,7 +109,6 @@ app.post("/createUser", async (req, res) => {
     })
 
     if (checkUserExist.rows == '') {
-      res.status(200).json({ message: "Succesfull user Created" })
       userLogIn = true
 
       await db.execute({
@@ -121,8 +118,7 @@ app.post("/createUser", async (req, res) => {
         args: { id, userName, userPassword }
       })
       res.status(200).json({ message: "User created" })
-      res.status(200).json({ message: user })
-      res.status(200).json({ message: userPassword })
+
     } else {
       res.status(400).json({ message: "User already created" })
       console.log('user alerady created')
