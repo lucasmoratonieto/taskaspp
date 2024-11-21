@@ -102,10 +102,8 @@ app.post("/createUser", async (req, res) => {
             WHERE userName = :userName;`,
       args: { userName }
     })
-    res.json({ message: checkUserExist })
 
-
-    if (checkUserExist.rows === '') {
+    if (checkUserExist.rows == '') {
 
       userLogIn = true
       await db.execute({
