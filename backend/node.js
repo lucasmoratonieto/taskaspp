@@ -93,8 +93,6 @@ app.post("/createUser", async (req, res) => {
   const userPassword = req.body.user.userPassword;
   // const id = crypto.randomUUID()
   const id = uuidv4()
-  res.status(400).json({ message: "Acceso" })
-
 
   if (user.userName == '' || user.userPassword == '') {
     res.status(400).json({ message: "Please enter a User Value" })
