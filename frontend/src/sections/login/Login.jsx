@@ -72,7 +72,7 @@ function Login() {
       setIsloading(true)
       try {
 
-        const res = await fetch(baseURL + '/submit',
+        const res = await fetch(baseURL + '/createUser',
           {
             method: 'POST',
             headers: {
@@ -80,7 +80,8 @@ function Login() {
             },
             body: JSON.stringify({
               user: {
-                user: userCredentials
+                userName: userName,
+                userPassword: password
               }
             })
           }

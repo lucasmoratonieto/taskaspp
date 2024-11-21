@@ -4,14 +4,10 @@ import { createClient } from "@libsql/client";
 import dotenv from 'dotenv';
 const app = express()
 
-const corsOptions = {
-  origin: ['https://3000-idx-taskaspp-1731956208703.cluster-blu4edcrfnajktuztkjzgyxzek.cloudworkstations.dev', 'https://lucastaskapp.netlify.app'],
-  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'Authorization'],
-};
 
-app.use(cors(corsOptions));
-app.options('*', cors(corsOptions));
+
+app.use(cors());
+
 
 app.use(express.json())
 app.use(express.static('public'))
@@ -87,14 +83,15 @@ app.post("/submit", async (req, res) => {
 })
 
 app.post("/createUser", async (req, res) => {
-  res.set('Access-Control-Allow-Origin', '*');
-  res.set('Access-Control-Allow-Methods', 'POST, GET, OPTIONS');
-  res.set('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+
 
   const user = req.body.user;
   userName = req.body.user.userName;
   const userPassword = req.body.user.userPassword;
   const id = crypto.randomUUID()
+  console.log(userName)
+  console.log(userPassword)
+  console.log(id)
 
   if (user.userName == '' || user.userPassword == '') {
     res.status(400).json({ message: "Please enter a User Value" })
@@ -122,8 +119,6 @@ app.post("/createUser", async (req, res) => {
     }
 
   }
-
-  res.status(400).json({ message: 'User not created' })
   console.log('User not created')
 
 
