@@ -81,9 +81,9 @@ app.post("/submit", async (req, res) => {
 })
 
 app.post("/createUser", async (req, res) => {
-  // res.setHeader("Access-Control-Allow-Origin", "*"); // O usa tu dominio específico
-  // res.setHeader("Access-Control-Allow-Methods", "POST, GET, OPTIONS, DELETE");
-  // res.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization");
+  res.setHeader("Access-Control-Allow-Origin", "*"); // O usa tu dominio específico
+  res.setHeader("Access-Control-Allow-Methods", "POST, GET, OPTIONS, DELETE");
+  res.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization");
 
   const user = req.body.user;
   userName = req.body.user.userName;
