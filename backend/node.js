@@ -97,29 +97,30 @@ app.post("/createUser", async (req, res) => {
   if (user.userName == '' || user.userPassword == '') {
     res.status(400).json({ message: "Please enter a User Value" })
   } else {
-    const checkUserExist = await db.execute({
-      sql: `SELECT * FROM userData
-            WHERE userName = :userName;`,
-      args: { userName }
-    })
+    res.status(200).json({ message: "Hasta aqui" })
 
-    if (checkUserExist.rows == '') {
-      res.status(200).json({ message: "Hasta aqui" })
+    // const checkUserExist = await db.execute({
+    //   sql: `SELECT * FROM userData
+    //         WHERE userName = :userName;`,
+    //   args: { userName }
+    // })
 
-      // userLogIn = true
+    // if (checkUserExist.rows == '') {
 
-      //   await db.execute({
-      //     sql: `INSERT INTO userData 
-      //         (id, userName, userPassword)
-      //         VALUES (:id ,:userName, :userPassword)`,
-      //     args: { id, userName, userPassword }
-      //   })
-      //   res.status(200).json({ message: "User created" })
+    //   // userLogIn = true
 
-      // } else {
-      //   res.status(400).json({ message: "User already created" })
-      //   console.log('user alerady created')
-    }
+    //   //   await db.execute({
+    //   //     sql: `INSERT INTO userData 
+    //   //         (id, userName, userPassword)
+    //   //         VALUES (:id ,:userName, :userPassword)`,
+    //   //     args: { id, userName, userPassword }
+    //   //   })
+    //   //   res.status(200).json({ message: "User created" })
+
+    //   // } else {
+    //   //   res.status(400).json({ message: "User already created" })
+    //   //   console.log('user alerady created')
+    // }
 
   }
   console.log('User not created')
