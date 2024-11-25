@@ -22,8 +22,8 @@ const db = createClient({
   authToken: process.env.DB_TOKEN
 })
 
-const port = process.env.PORT
-// const port = 3500
+// const port = process.env.PORT
+const port = 3500
 
 await db.execute(`
     CREATE TABLE IF NOT EXISTS userData(
@@ -34,6 +34,7 @@ await db.execute(`
 
 await db.execute(`
     CREATE TABLE IF NOT EXISTS task(
+    id TEXT ,
     taskName TEXT,
     taskStatus TEXT,
     taskRelevance TEXT,
@@ -49,6 +50,7 @@ app.get("/getData", (req, res) => {
 // -----------------------------------------login.JSX------------------------------------------------
 
 let userName = ''
+let id = ''
 app.post("/submit", async (req, res) => {
   const user = req.body.user;
   userName = req.body.user.userName;
@@ -72,6 +74,13 @@ app.post("/submit", async (req, res) => {
       if (checkPassword.rows != '') {
         res.status(200).json({ message: "Succesufl Log in" })
         userLogIn = true
+        let idRow = await db.execute({
+          sql: `SELECT id FROM userData
+                WHERE userName = :userName;`,
+          args: { userName }
+        })
+        id = idRow.rows[0].id
+        return id
       } else {
         res.status(400).json({ message: "Incorrect password" })
         userLogIn = false
@@ -83,16 +92,11 @@ app.post("/submit", async (req, res) => {
   }
 })
 
+
 app.post("/createUser", async (req, res) => {
-
-
-
-
-  // const user = req.body.user;
   userName = req.body.user.userName;
   const userPassword = req.body.user.userPassword;
-  // const id = crypto.randomUUID()
-  const id = uuidv4()
+  id = uuidv4()
 
   if (userName == '' || userPassword == '') {
     res.status(400).json({ message: "Please enter a User Value" })
@@ -153,7 +157,10 @@ app.get("/userName", async (req, res) => {
 
 app.get("/getTasks", async (req, res) => {
   if (userLogIn) {
-    const allTasks = await db.execute(`SELECT * FROM task`)
+    const allTasks = await db.execute({
+      sql: `SELECT * FROM task WHERE id = :id`,
+      args: { id }
+    })
     res.json(allTasks.rows)
     // console.log(allTasks)
   }
@@ -254,8 +261,8 @@ app.post("/newTask", async (req, res) => {
 
   try {
     const createNewTask = await db.execute({
-      sql: `INSERT INTO task (taskName, taskStatus, taskRelevance) VALUES (:newTaskName, :newTaskStatus, :newTaskRelevance) `,
-      args: { newTaskName, newTaskStatus, newTaskRelevance }
+      sql: `INSERT INTO task (id, taskName, taskStatus, taskRelevance) VALUES (:id, :newTaskName, :newTaskStatus, :newTaskRelevance) `,
+      args: { id, newTaskName, newTaskStatus, newTaskRelevance }
     })
     res.status(200).json({ message: 'New Task has been created' })
   } catch (e) {
