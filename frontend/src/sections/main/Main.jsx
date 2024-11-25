@@ -21,7 +21,6 @@ function Main() {
   const [isLoading, setIsloading] = useState(false)
   const [typingTimeout, setTypingTimeout] = useState(null);
 
-  const [date, setDate] = useState(null);
 
   const getTasks = async () => {
     const res = await fetch(baseURL + '/getTasks',
@@ -321,7 +320,7 @@ function Main() {
               </select>
             </td>
             <td className={`each-task-date ${task.taskId}`}>
-              <DatePicker placeholderText="Selecciona una fecha" className={`react-datepicker ${task.taskId}`} selected={date} value={task.taskStartDate} onChange={(newDate) => updateTasKDate(task.taskId, newDate)} dateFormat="dd-MM-yyyy"
+              <DatePicker placeholderText="Selecciona una fecha" className={`react-datepicker ${task.taskId}`} value={task.taskStartDate} onChange={(newDate) => updateTasKDate(task.taskId, newDate)} dateFormat="dd-MM-yyyy"
               />
             </td>
             <td className='options'>
