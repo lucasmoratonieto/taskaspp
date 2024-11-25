@@ -22,8 +22,8 @@ const db = createClient({
   authToken: process.env.DB_TOKEN
 })
 
-// const port = process.env.PORT
-const port = 3500
+const port = process.env.PORT
+
 
 await db.execute(`
     CREATE TABLE IF NOT EXISTS userData(
@@ -34,7 +34,8 @@ await db.execute(`
 
 await db.execute(`
     CREATE TABLE IF NOT EXISTS task(
-    id TEXT ,
+    subjectId TEXT ,
+    taskId INTEGER PRIMARY KEY AUTOINCREMENT,
     taskName TEXT,
     taskStatus TEXT,
     taskRelevance TEXT,
@@ -50,7 +51,7 @@ app.get("/getData", (req, res) => {
 // -----------------------------------------login.JSX------------------------------------------------
 
 let userName = ''
-let id = ''
+let subjectId;
 app.post("/submit", async (req, res) => {
   const user = req.body.user;
   userName = req.body.user.userName;
@@ -79,8 +80,8 @@ app.post("/submit", async (req, res) => {
                 WHERE userName = :userName;`,
           args: { userName }
         })
-        id = idRow.rows[0].id
-        return id
+        subjectId = idRow.rows[0].id
+        return subjectId
       } else {
         res.status(400).json({ message: "Incorrect password" })
         userLogIn = false
@@ -96,7 +97,7 @@ app.post("/submit", async (req, res) => {
 app.post("/createUser", async (req, res) => {
   userName = req.body.user.userName;
   const userPassword = req.body.user.userPassword;
-  id = uuidv4()
+  subjectId = uuidv4()
 
   if (userName == '' || userPassword == '') {
     res.status(400).json({ message: "Please enter a User Value" })
@@ -113,18 +114,18 @@ app.post("/createUser", async (req, res) => {
       await db.execute({
         sql: `INSERT INTO userData 
               (id, userName, userPassword)
-              VALUES (:id ,:userName, :userPassword)`,
-        args: { id, userName, userPassword }
+              VALUES (:subjectId ,:userName, :userPassword)`,
+        args: { subjectId, userName, userPassword }
       })
       res.status(200).json({ message: "User created" })
 
     } else {
       res.status(400).json({ message: "User already created" })
-      console.log('user alerady created')
+      // console.log('user alerady created')
     }
 
   }
-  console.log('User not created')
+  // console.log('User not created')
 
 
 })
@@ -146,7 +147,7 @@ app.get("/userName", async (req, res) => {
       args: { userName }
     })
     res.status(200).json(getUserName.rows)
-    console.log(getUserName)
+    // console.log(getUserName)
   }
   else {
     res.status(400).json({ message: "User not logged" })
@@ -158,8 +159,8 @@ app.get("/userName", async (req, res) => {
 app.get("/getTasks", async (req, res) => {
   if (userLogIn) {
     const allTasks = await db.execute({
-      sql: `SELECT * FROM task WHERE id = :id`,
-      args: { id }
+      sql: `SELECT * FROM task WHERE subjectId = :subjectId`,
+      args: { subjectId }
     })
     res.json(allTasks.rows)
     // console.log(allTasks)
@@ -169,41 +170,42 @@ app.get("/getTasks", async (req, res) => {
 
 app.post("/changeTaskName", async (req, res) => {
   const body = req.body
-  const id = req.body.id
+  const taskId = req.body.id
   const updatedTaskName = req.body.taskName
 
-  console.log(id)
+
   console.log(updatedTaskName)
 
   try {
     const changeTaskName = await db.execute({
-      sql: `UPDATE task SET taskName = :updatedTaskName WHERE id = :id`,
-      args: { updatedTaskName, id }
+      sql: `UPDATE task SET taskName = :updatedTaskName WHERE taskId = :taskId`,
+      args: { updatedTaskName, taskId }
     })
     res.status(200).json({ message: 'Task Name has been updated' })
   } catch (e) {
     res.status(400).json({ message: 'Task Name has not been updated' })
-    console.log(e)
+    // console.log(e)
   }
 
 })
 
 
 app.post("/changeStatus", async (req, res) => {
-  const id = req.body.id
+  const idall = req.body.id
+  const id = idall[idall.length - 1]
   const updatedTaskStatus = req.body.taskStatus
-  console.log(id)
-  console.log(updatedTaskStatus)
+  console.log('id', id)
+  console.log('status', updatedTaskStatus)
 
   try {
-    const changeTaskStatus = await db.execute({
-      sql: `UPDATE task SET taskStatus = :updatedTaskStatus WHERE id = :id`,
+    await db.execute({
+      sql: `UPDATE task SET taskStatus = :updatedTaskStatus WHERE taskId = :id`,
       args: { updatedTaskStatus, id }
     })
     res.status(200).json({ message: 'Status has been updated' })
   } catch (e) {
     res.status(400).json({ message: 'Status has not been updated' })
-    console.log(e)
+    // console.log(e)
   }
 
 })
@@ -211,19 +213,36 @@ app.post("/changeStatus", async (req, res) => {
 
 app.post("/changeDate", async (req, res) => {
   const id = req.body.id
-  const updatedTaskDate = req.body.taskDate
+  const newDate = new Date(req.body.taskDate)
   console.log(id)
-  console.log(updatedTaskDate)
+  console.log(typeof (newDate))
+  const formattedDate = newDate.toLocaleDateString('es-ES', {
+    year: 'numeric',   // Años como '2023'
+    month: '2-digit',   // Mes como '02' (mes con ceros a la izquierda)
+    day: '2-digit'      // Día como '01' (día con ceros a la izquierda)
+  });
+  console.log(formattedDate);
+  // console.log(newDate.toLocaleDateString());
+  const todayDate = new Date().toLocaleDateString('es-ES', {
+    year: 'numeric',   // Años como '2023'
+    month: '2-digit',   // Mes como '02' (mes con ceros a la izquierda)
+    day: '2-digit'      // Día como '01' (día con ceros a la izquierda)
+  });
+  console.log('Today', todayDate)
+  if (formattedDate > todayDate) {
+    res.status(400).json({ message: 'Start Date cannot be set in future' })
 
-  try {
-    const changeTaskDate = await db.execute({
-      sql: `UPDATE task SET taskStartDate = :updatedTaskDate WHERE id = :id`,
-      args: { updatedTaskDate, id }
-    })
-    res.status(200).json({ message: 'Date has been updated' })
-  } catch (e) {
-    res.status(400).json({ message: 'Date has not been updated' })
-    console.log(e)
+  } else {
+    try {
+      await db.execute({
+        sql: `UPDATE task SET taskStartDate = :formattedDate WHERE taskId = :id`,
+        args: { formattedDate, id }
+      })
+      res.status(200).json({ message: 'Date has been updated' })
+    } catch (e) {
+      res.status(400).json({ message: 'Date has not been updated' })
+      // console.log(e)
+    }
   }
 
 })
@@ -239,13 +258,13 @@ app.post("/changeRelevance", async (req, res) => {
 
   try {
     const changeTaskRelevance = await db.execute({
-      sql: `UPDATE task SET taskRelevance = :updatedTaskRelevance WHERE id = :id`,
+      sql: `UPDATE task SET taskRelevance = :updatedTaskRelevance WHERE taskId = :id`,
       args: { updatedTaskRelevance, id }
     })
     res.status(200).json({ message: 'Relevance has been updated' })
   } catch (e) {
     res.status(400).json({ message: 'Relevance has not been updated' })
-    console.log(e)
+    // console.log(e)
   }
 
 })
@@ -261,10 +280,11 @@ app.post("/newTask", async (req, res) => {
 
   try {
     const createNewTask = await db.execute({
-      sql: `INSERT INTO task (id, taskName, taskStatus, taskRelevance) VALUES (:id, :newTaskName, :newTaskStatus, :newTaskRelevance) `,
-      args: { id, newTaskName, newTaskStatus, newTaskRelevance }
+      sql: `INSERT INTO task (subjectId, taskName, taskStatus, taskRelevance) VALUES (:subjectId, :newTaskName, :newTaskStatus, :newTaskRelevance) `,
+      args: { subjectId, newTaskName, newTaskStatus, newTaskRelevance }
     })
     res.status(200).json({ message: 'New Task has been created' })
+
   } catch (e) {
     res.status(400).json({ message: 'New Task has not been created' })
     console.log(e)
@@ -277,20 +297,15 @@ app.post("/newTask", async (req, res) => {
 app.post("/deleteTask", async (req, res) => {
 
   const id = req.body.id
-
-
-  console.log(id)
-
-
   try {
     const deteleTask = await db.execute({
-      sql: `DELETE FROM task WHERE id = :id`,
+      sql: `DELETE FROM task WHERE taskId = :id`,
       args: { id }
     })
     res.status(200).json({ message: 'Task has been deleted' })
   } catch (e) {
     res.status(400).json({ message: 'Task not been deleted' })
-    console.log(e)
+    // console.log(e)
   }
 
 })

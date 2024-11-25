@@ -21,7 +21,7 @@ function Main() {
   const [isLoading, setIsloading] = useState(false)
   const [typingTimeout, setTypingTimeout] = useState(null);
 
-  const [startDate, setStartDate] = useState(new Date());
+  const [date, setDate] = useState(null);
 
   const getTasks = async () => {
     const res = await fetch(baseURL + '/getTasks',
@@ -34,29 +34,28 @@ function Main() {
 
   }
   const getUserName = async () => {
-    try{
+    try {
 
       const res = await fetch(baseURL + '/userName',
-      {
-        method: 'GET'
+        {
+          method: 'GET'
+        }
+      )
+      const status = res.status
+
+      if (status !== 400) {
+
+        const getUserNameGet = await res.json()
+        const userName = getUserNameGet[0].userName
+
+        setUserNameState(userName);
+        getTasks()
+      } else if (status === 400) {
+        navigate('/login')
       }
-    )
-    const status =  res.status
-    
-    if (status !== 400) {
-      
-      // console.log(status)
-      const getUserNameGet = await res.json()
-      const userName = getUserNameGet[0].userName
-      
-      setUserNameState(userName);
-      getTasks()
-    } else if (status === 400) {
-      navigate('/login')
+    } catch (err) {
+      console.log(err)
     }
-  }catch(err){
-    console.log(err)
-  }
   }
 
   useEffect(() => {
@@ -81,8 +80,7 @@ function Main() {
   function updateTaskNameTimer(e) {
     const id = e.target.id
     const updatedTasKName = e.target.value
-    console.log(id)
-    console.log(updatedTasKName)
+
     if (typingTimeout) {
       clearTimeout(typingTimeout);
     }
@@ -93,8 +91,7 @@ function Main() {
   }
 
   const updateTasKName = async (id, updatedTasKName) => {
-    console.log(id)
-    console.log(updatedTasKName)
+
     try {
       await fetch(baseURL + '/changeTaskName',
         {
@@ -118,8 +115,7 @@ function Main() {
   function handleEnter(e) {
     const id = e.target.id
     const updatedTasKName = e.target.value
-    console.log(id)
-    console.log(updatedTasKName)
+
 
     if (e.keyCode === 13 || e.wich === 13) {
       updateTasKName(id, updatedTasKName)
@@ -131,8 +127,7 @@ function Main() {
   const updateTasKStatus = async (event) => {
     const changedStatus = event.target.value;
     const id = event.target.id;
-    console.log(changedStatus)
-    console.log(id)
+
 
     const res = await fetch(baseURL + '/changeStatus',
       {
@@ -148,6 +143,7 @@ function Main() {
     )
     const postChangeStatus = await res.json()
     console.log(postChangeStatus)
+
     getTasks()
 
   }
@@ -157,8 +153,7 @@ function Main() {
     const changedRelevance = event.target.value;
     // const id = event.target.id[event.target.id.length - 1];
     const id = event.target.id;
-    console.log(changedRelevance)
-    console.log(id)
+
 
     const res = await fetch(baseURL + '/changeRelevance',
       {
@@ -179,42 +174,11 @@ function Main() {
 
   }
 
-  const updateTasKDate = async (date, event) => {
-
-    //Esto funciona, pero el poblema es que datepicker cambia los nomnbres y el event.target no tiene id.
-    setStartDate(date);
-    const week = event.target.parentElement;
-    const month = week.parentElement;
-    const monthContainer = month.parentElement;
-    const calendar = monthContainer.parentElement;
-    const style = calendar.parentElement;
-    const pooper = style.parentElement;
-    const loop = pooper.parentElement;
-    const test = loop.parentElement.className;
-    const id = test[test.length - 1]
-
-
-    const changedDateText = event.target.ariaLabel;
-    const changedDateTextth = changedDateText.substr(7)
-    const removeOrdinal = (changedDateTextth) => changedDateTextth.replace(/(\d+)(st|nd|rd|th)/, "$1");
-    const changedDate = removeOrdinal(changedDateTextth);
-
-    const parsedDate = new Date(changedDate.replace(/^\w+, /, ""));
-    const formattedDate = parsedDate.toLocaleDateString({
-
-      year: 'numeric',
-      month: 'numeric',
-      day: 'numeric'
-    });
+  const updateTasKDate = async (id, newDate) => {
 
 
     console.log(id)
-    console.log(formattedDate)
-
-
-    const dateValue = document.getElementsByClassName(`react-datepicker ${id}`)[0].value
-    console.log('This is the date value', dateValue)
-
+    console.log(newDate)
 
     const res = await fetch(baseURL + '/changeDate',
       {
@@ -224,7 +188,7 @@ function Main() {
         },
         body: JSON.stringify({
           id: id,
-          taskDate: formattedDate
+          taskDate: newDate
         })
       }
     )
@@ -275,7 +239,7 @@ function Main() {
 
   async function deleteTaskFunction(event) {
     const id = event.target.id;
-    console.log(id)
+
     const deleteTask = await fetch(baseURL + '/deleteTask',
       {
         method: 'POST',
@@ -333,16 +297,16 @@ function Main() {
         </tr>
         {allTasks.map((task, number) => (
 
-          <tr key={task.id} className={`each-task task-${task.id}`} >
+          <tr key={task.taskId} className={`each-task task-${task.taskId}`} >
             <td className={`each-task-id`}>
               {number + 1}
             </td>
             <td className={`each-task-name`}>
               <input type="text" defaultValue={task.taskName} onKeyUp={handleEnter} onChange={updateTaskNameTimer}
-                className='input-task-name' id={`${task.id}`} />
+                className='input-task-name' id={`${task.taskId}`} />
             </td>
             <td className={`each-task-status`}>
-              <select name='status' id={`status ${task.id}`} defaultValue={task.taskStatus} onChange={updateTasKStatus}  >
+              <select name='status' id={`status ${task.taskId}`} defaultValue={task.taskStatus} onChange={updateTasKStatus}  >
                 <option value="To do">To do</option>
                 <option value="Doing" >Doing</option>
                 <option value="Done">Done</option>
@@ -350,23 +314,23 @@ function Main() {
 
             </td>
             <td className={`each-task-relevance`}>
-              <select name='relevance' className='relevance' id={`${task.id}`} defaultValue={task.taskRelevance} onChange={updateTasKRelevance} >
+              <select name='relevance' className='relevance' id={`${task.taskId}`} defaultValue={task.taskRelevance} onChange={updateTasKRelevance} >
                 <option value="Low">low</option>
                 <option value="Medium" >Medium</option>
                 <option value="High">High</option>
               </select>
             </td>
-            <td className={`each-task-date ${task.id}`}>
-              <DatePicker placeholderText="Selecciona una fecha" className={`react-datepicker ${task.id}`} selected={startDate} onChange={updateTasKDate} dateFormat="dd-MM-yyyy" // Configura el formato deseado
+            <td className={`each-task-date ${task.taskId}`}>
+              <DatePicker placeholderText="Selecciona una fecha" className={`react-datepicker ${task.taskId}`} selected={date} value={task.taskStartDate} onChange={(newDate) => updateTasKDate(task.taskId, newDate)} dateFormat="dd-MM-yyyy"
               />
             </td>
             <td className='options'>
-              {/* <button className={`delete-button ${task.id}`} id={task.id} onClick={deleteTaskFunction}> */}
-              <button className={`delete-button ${task.id}`} id={task.id} onClick={handleOptionsTask}>
-                <img id={task.id} src={threeDots} alt={`button${task.id}`} />
+
+              <button className={`delete-button ${task.taskId}`} id={task.taskId} onClick={handleOptionsTask}>
+                <img id={task.taskId} src={threeDots} alt={`button${task.taskId}`} />
               </button>
-              <div id={`options${task.id}`} className={`hiden-optionsTaskMenu`}>
-                <button id={`${task.id}`} onClick={deleteTaskFunction}>
+              <div id={`options${task.taskId}`} className={`hiden-optionsTaskMenu`}>
+                <button id={`${task.taskId}`} onClick={deleteTaskFunction}>
                   Delete Task
                 </button>
               </div>
