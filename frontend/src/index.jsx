@@ -13,7 +13,7 @@ root.render(
       <InactivityHandler />
       <Routes>
         <Route path="/login" element={<Login />} />
-        <Route path="/" element={<Main />} />
+        <Route path="/:userNameURL" element={<Main />} />
       </Routes>
     </Router>
   </React.StrictMode>

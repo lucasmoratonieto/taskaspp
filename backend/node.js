@@ -23,6 +23,7 @@ const db = createClient({
 })
 
 const port = process.env.PORT
+// const port = 3500
 
 
 await db.execute(`
@@ -135,12 +136,13 @@ app.post("/createUser", async (req, res) => {
 // -----------------------------------------Main.JSX------------------------------------------------
 
 
-app.get("/logOff", async (req, res) => {
+app.get("/:userName/logOff", async (req, res) => {
   res.status(200).json({ message: "Log Off" })
   userLogIn = false
 })
 
 app.get("/userName", async (req, res) => {
+
   if (userLogIn) {
     const getUserName = await db.execute({
       sql: `SELECT userName FROM userData WHERE userName = :userName`,
@@ -155,8 +157,7 @@ app.get("/userName", async (req, res) => {
   }
 })
 
-
-app.get("/getTasks", async (req, res) => {
+app.get('/:userName/getTasks', async (req, res) => {
   if (userLogIn) {
     const allTasks = await db.execute({
       sql: `SELECT * FROM task WHERE subjectId = :subjectId`,
@@ -168,7 +169,7 @@ app.get("/getTasks", async (req, res) => {
 })
 
 
-app.post("/changeTaskName", async (req, res) => {
+app.post("/:userName/changeTaskName", async (req, res) => {
   const body = req.body
   const taskId = req.body.id
   const updatedTaskName = req.body.taskName
@@ -190,9 +191,9 @@ app.post("/changeTaskName", async (req, res) => {
 })
 
 
-app.post("/changeStatus", async (req, res) => {
-  const idall = req.body.id
-  const id = idall[idall.length - 1]
+app.post("/:userName/changeStatus", async (req, res) => {
+  const id = req.body.id
+  console.log(id)
   const updatedTaskStatus = req.body.taskStatus
   console.log('id', id)
   console.log('status', updatedTaskStatus)
@@ -211,7 +212,7 @@ app.post("/changeStatus", async (req, res) => {
 })
 
 
-app.post("/changeDate", async (req, res) => {
+app.post("/:userName/changeDate", async (req, res) => {
   const id = req.body.id
   const newDate = new Date(req.body.taskDate)
   console.log(id)
@@ -251,7 +252,7 @@ app.post("/changeDate", async (req, res) => {
 
 
 
-app.post("/changeRelevance", async (req, res) => {
+app.post("/:userName/changeRelevance", async (req, res) => {
   const body = req.body
   const id = req.body.id
   const updatedTaskRelevance = req.body.taskRelevance
@@ -270,7 +271,7 @@ app.post("/changeRelevance", async (req, res) => {
 })
 
 
-app.post("/newTask", async (req, res) => {
+app.post("/:userName/newTask", async (req, res) => {
   const body = req.body
   console.log('This is the body', body)
 
@@ -294,7 +295,7 @@ app.post("/newTask", async (req, res) => {
 
 
 
-app.post("/deleteTask", async (req, res) => {
+app.post("/:userName/deleteTask", async (req, res) => {
 
   const id = req.body.id
   try {

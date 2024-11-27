@@ -9,6 +9,8 @@ function Login() {
   const [isLoading, setIsloading] = useState(false)
   const userNameRef = useRef(null)
   const passwordRef = useRef(null)
+  let userNameURL = ''
+
 
   const [checkPassword, setcheckPassword] = useState(null)
 
@@ -42,7 +44,9 @@ function Login() {
           }
         )
         if (res.status === 200) {
-          navigate('/')
+          userNameURL = userName
+          console.log('Navigating to user', userName)
+          navigate('/' + userName)
         }
         if (res.status === 400) {
           setcheckPassword(true)
@@ -87,7 +91,7 @@ function Login() {
           }
         )
         if (res.status === 200) {
-          navigate('/')
+          navigate('/' + userName)
         }
         if (res.status === 400) {
           console.log('Ya existe un usuario con ese nombre')
@@ -145,6 +149,10 @@ function Login() {
           </div>
         </div>
       }
+      <div>
+        {userNameURL}
+      </div>
+
     </section>
   );
 }
