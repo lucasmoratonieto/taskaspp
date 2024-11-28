@@ -82,8 +82,8 @@ app.post("/submit", async (req, res) => {
           args: { userName }
         })
         subjectId = idRow.rows[0].id
-        const token = jwt.sign({ userName }, process.env.JWT_SECRET, { expiresIn: '1h' });
-        res.status(200).json({ message: token })
+        // const token = jwt.sign({ userName }, process.env.JWT_SECRET, { expiresIn: '1h' });
+        // res.status(200).json({ message: token })
         return subjectId
       } else {
         res.status(400).json({ message: "Incorrect password" })
