@@ -34,17 +34,16 @@ function Main() {
         }
       )
       const status = res.status
-
       if (status !== 400) {
 
         const getUserNameGet = await res.json()
         const userNameDef = getUserNameGet[0].userName
         setUserName(userNameDef)
-        console.log('This is the user name for. ', userName)
+        console.log('This is the user name for. ', userNameDef)
 
-        setUserNameState(userName);
+        setUserNameState(userNameDef);
         getTasks()
-        return userName
+        return userNameDef
       } else if (status === 400) {
         navigate('/login')
       }
@@ -267,7 +266,7 @@ function Main() {
   // ----------------------------------------------------------
   // ----------------------------------------------------------
   return (
-    <section>
+    <section className='main-section'>
       <div className='log-off'>
         <button onClick={logOffFunction}>
           <div className='log-off-div'>
@@ -275,10 +274,16 @@ function Main() {
           </div>
         </button>
       </div>
-      <h1>
+      <h1 className='welcome-msg'>
         Welcome to Task App {userNameState} 👋
       </h1>
       <h2>These are the all the tasks from the dataBase</h2>
+      <div className='view-options'>
+        <ul className='view-options-list'>
+          <li><button>Grid</button></li>
+          <li><button>List</button></li>
+        </ul>
+      </div>
       <table className='tasks'>
         <thead>
           <tr className='table-title'>

@@ -111,9 +111,9 @@ function Login() {
     }
   }
   return (
-    <section>
+    <section className='login-section'>
       {isLoading ? (<LoadingScreen />) :
-        <div className="body">
+        <div className="body ">
           <label className='welcome-msg'>
             <h1>Welcome, please sign in </h1>
           </label>
