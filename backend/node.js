@@ -80,8 +80,8 @@ app.post("/submit", async (req, res) => {
           args: { userName }
         })
         subjectId = idRow.rows[0].id
-        const token = jwt.sign(user, 'clave_secreta', { expiresIn: '1h' });
-        res.status(200).json({ message: "Succesufl Log in", token: token })
+        const token = jwt.sign(user, userPassword, { expiresIn: '1h' });
+        res.status(200).json({ message: "Incorrect password", token: token })
         return subjectId
       } else {
         res.status(400).json({ message: "Incorrect password" })
