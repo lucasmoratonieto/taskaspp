@@ -5,6 +5,7 @@ import { baseURL } from '../../assets/constanst/constants.js'
 import LoadingScreen from '../../assets/constanst/LoadingScreen.jsx';
 
 
+
 function Login() {
   const [isLoading, setIsloading] = useState(false)
   const userNameRef = useRef(null)
@@ -46,6 +47,8 @@ function Login() {
         if (res.status === 200) {
           userNameURL = userName
           console.log('Navigating to user', userName)
+          const message = await res.json()
+          localStorage.setItem('authToken', message.token);
           navigate('/' + userName)
         }
         if (res.status === 400) {

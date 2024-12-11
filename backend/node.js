@@ -3,12 +3,11 @@ import cors from 'cors'
 import { createClient } from "@libsql/client";
 import dotenv from 'dotenv';
 import { v4 as uuidv4 } from 'uuid';
+import jwt from 'jsonwebtoken';
+
+
 const app = express()
-
-
-
 app.use(cors());
-
 
 app.use(express.json())
 app.use(express.static('public'))
@@ -22,8 +21,8 @@ const db = createClient({
   authToken: process.env.DB_TOKEN
 })
 
-const port = process.env.PORT
-// const port = 3500
+// const port = process.env.PORT
+const port = 3500
 
 
 await db.execute(`
@@ -74,7 +73,6 @@ app.post("/submit", async (req, res) => {
         args: { userPassword }
       })
       if (checkPassword.rows != '') {
-        res.status(200).json({ message: "Succesufl Log in" })
         userLogIn = true
         let idRow = await db.execute({
           sql: `SELECT id FROM userData
@@ -82,6 +80,8 @@ app.post("/submit", async (req, res) => {
           args: { userName }
         })
         subjectId = idRow.rows[0].id
+        const token = jwt.sign(user, 'clave_secreta', { expiresIn: '1h' });
+        res.status(200).json({ message: "Succesufl Log in", token: token })
         return subjectId
       } else {
         res.status(400).json({ message: "Incorrect password" })

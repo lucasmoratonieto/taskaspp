@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import './index.css';
 import Login from './sections/login/Login';
 import Main from './sections/main/Main';
@@ -12,6 +12,7 @@ root.render(
     <Router>
       <InactivityHandler />
       <Routes>
+        <Route path="/" element={<Navigate to="/login" />} />
         <Route path="/login" element={<Login />} />
         <Route path="/:userNameURL" element={<Main />} />
       </Routes>
